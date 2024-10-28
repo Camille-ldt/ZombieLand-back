@@ -2,6 +2,7 @@
   "name": "zombieland-back",
   "version": "1.0.0",
   "description": "Backend for ZombieLand project",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
