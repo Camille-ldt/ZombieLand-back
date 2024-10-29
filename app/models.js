@@ -7,31 +7,41 @@ import { Reservation } from "./models/Reservation.js";
 import { Avis } from "./models/Avis.js";
 import { Payment } from "./models/Payment.js";
 import { Period } from "./models/Period.js";
+import { UserRole } from "./models/UserRole.js";
+import { ActivityAvis } from "./models/ActivityAvis.js";
+import { ActivityMultimedia } from "./models/ActivityMultimedia.js";
+
 
 
 // Many-to-Many relationships
 User.belongsToMany(Role, {
-    through: 'user_role'
+    through: 'user_role',
+    foreignKey: 'user_id'
 });
 
 Role.belongsToMany(User, {
-    through: 'user_role'
+    through: 'user_role',
+    foreignKey: 'role_id'
 });
 
 Activity.belongsToMany(Avis, {
-    through: 'activity_avis'
+    through: 'activity_avis',
+    foreignKey: 'activity_id'
 });
 
 Avis.belongsToMany(Activity, {
-    through: 'activity_avis'
+    through: 'activity_avis',
+    foreignKey: 'avis_id'
 });
 
 Activity.belongsToMany(Multimedia, {
-    through: 'activity_multimedia'
+    through: 'activity_multimedia',
+    foreignKey: 'mutlimedia_id'
 });
 
 Multimedia.belongsToMany(Activity, {
-    through: 'activity_multimedia'
+    through: 'activity_multimedia',
+    foreignKey: 'activity_id'
 });
 
 // One-to-Many relationships
@@ -66,3 +76,19 @@ Reservation.hasMany(Payment, {
 Payment.belongsTo(Reservation, {
     foreignKey: 'reservation_id'
 });
+
+export {
+sequelize,
+Activity,
+Avis,
+Multimedia,
+ActivityAvis,
+ActivityMultimedia,
+UserRole,
+User,
+Role,
+Payment,
+Reservation,
+Category,
+Period,
+};

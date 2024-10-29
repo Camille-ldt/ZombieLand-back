@@ -33,3 +33,5 @@ export const ActivityAvis = sequelize.define('ActivityAvis', {
         }
     ]
 });
+
+module.exports = ActivityAvis;
