@@ -1,15 +1,17 @@
-import { User } from "./models/User.js";
-import { Role } from "./models/Role.js";
-import { Category } from "./models/Category.js";
-import { Activity } from "./models/Activity.js";
-import { Multimedia } from "./models/Multimedia.js";
-import { Reservation } from "./models/Reservation.js";
-import { Avis } from "./models/Avis.js";
-import { Payment } from "./models/Payment.js";
-import { Period } from "./models/Period.js";
-import { UserRole } from "./models/UserRole.js";
-import { ActivityAvis } from "./models/ActivityAvis.js";
-import { ActivityMultimedia } from "./models/ActivityMultimedia.js";
+import client from "./sequelize.js";
+
+import User from "./models/User.js";
+import Role from "./models/Role.js";
+import Category from "./models/Category.js";
+import Activity from "./models/Activity.js";
+import Multimedia from "./models/Multimedia.js";
+import Reservation from "./models/Reservation.js";
+import Avis from "./models/Avis.js";
+import Payment from "./models/Payment.js";
+import Period from "./models/Period.js";
+import UserRole from "./models/UserRole.js";
+import ActivityAvis from "./models/ActivityAvis.js";
+import ActivityMultimedia from "./models/ActivityMultimedia.js";
 
 
 
@@ -78,7 +80,7 @@ Payment.belongsTo(Reservation, {
 });
 
 export {
-sequelize,
+client,
 Activity,
 Avis,
 Multimedia,

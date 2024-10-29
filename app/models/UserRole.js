@@ -1,13 +1,16 @@
-import { Sequelize, Model, DataTypes } from 'sequelize';
-import { sequelize } from '../sequelize.js';
+import { Model, DataTypes } from 'sequelize';
+import client from '../sequelize.js';
 
-export const UserRole = sequelize.define('UserRole', {
+// Export UserRole class
+export default class UserRole extends Model {}
+
+UserRole.init({
     user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
         references: {
-            model: 'users',
+            model: 'user',
             key: 'id'
         }
     },
@@ -21,7 +24,7 @@ export const UserRole = sequelize.define('UserRole', {
         }
     }
 }, {
-    sequelize,
+    sequelize: client,
     tableName: 'user_role',
     timestamps: false,
     indexes: [
@@ -31,3 +34,4 @@ export const UserRole = sequelize.define('UserRole', {
         }
     ]
 });
+

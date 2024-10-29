@@ -1,7 +1,7 @@
-import { Sequelize, Model, DataTypes } from 'sequelize';
-import {sequelize} from '../sequelize.js';
+import { Model, DataTypes } from 'sequelize';
+import client from '../sequelize.js';
 
-export class Multimedia extends Model {}
+export default class Multimedia extends Model {}
 
 Multimedia.init({
     id: {
@@ -29,8 +29,7 @@ Multimedia.init({
       field: 'updated_at'  
     }
   }, {
-    sequelize,
-    modelName: 'Multimedia',
-    tableName: 'Multimedia',
+    sequelize: client,
+    tableName: 'multimedia',
     timestamps: true 
   });

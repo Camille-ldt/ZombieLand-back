@@ -1,8 +1,8 @@
-import { Sequelize, Model, DataTypes } from 'sequelize';
-import {sequelize} from '../sequelize.js';
+import { Model, DataTypes } from 'sequelize';
+import client from '../sequelize.js';
 
-
-export class Avis extends Model {}
+// Export Avis class
+export default class Avis extends Model {}
 
 Avis.init({
     note:{
@@ -21,12 +21,13 @@ Avis.init({
         type: DataTypes.INTEGER,
         allowNull: false,
         references:{
-            model: 'users',
+            model: 'user',
             key: 'id'
         }
     }
 },{
-    sequelize,
+    sequelize: client,
     tableName: 'avis',
     timestamps: true
 });
+

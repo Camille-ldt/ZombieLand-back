@@ -1,8 +1,8 @@
-import { sequelize } from '../sequelize.js';
+import client from '../sequelize.js';
 import { Model, DataTypes } from 'sequelize';
 
 // Export Category class
-export class Category extends Model {}
+export default class Category extends Model {}
 
 Category.init({
         name: {
@@ -14,7 +14,7 @@ Category.init({
             defaultValue: DataTypes.NOW,
                 },
 },{
-        sequelize, 
-        tableName: "Category",
+        sequelize: client, 
+        tableName: "category",
         timestramps: true,
     });

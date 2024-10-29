@@ -1,8 +1,8 @@
-import { Model, DataTypes } from "sequelize";
-import { sequelize } from "./sequelize.js";
+import { Model, DataTypes } from 'sequelize';
+import client from '../sequelize.js';
 
-
-export class User extends Model {};
+// Export User class
+export default class User extends Model {};
 
 User.init({
     firstname: {
@@ -26,8 +26,16 @@ User.init({
         type: DataTypes.TEXT,
         allowNull: false
     },
+    reservation_id:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references:{
+            model: 'reservation',
+            key: 'id'
+        }
+    }
 }, {
-    sequelize,
-    tableName: "User",
+    sequelize: client,
+    tableName: "user",
     timestamps: true
 });

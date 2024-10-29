@@ -1,14 +1,15 @@
-import { Sequelize, Model, DataTypes } from 'sequelize';
-import {sequelize} from '../sequelize.js';
+import { Model, DataTypes } from 'sequelize';
+import client from '../sequelize.js';
 
-class ActivityMultimedia extends Model {}
+// Export ActivityMultimedia class
+export default class ActivityMultimedia extends Model {}
 
 ActivityMultimedia.init({
   activity_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Activity',
+      model: 'activity',
       key: 'id'
     },
     onDelete: 'CASCADE'
@@ -17,16 +18,14 @@ ActivityMultimedia.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Multimedia',
+      model: 'multimedia',
       key: 'id'
     },
     onDelete: 'CASCADE'
   }
 }, {
-  sequelize,
-  modelName: 'ActivityMultimedia',
-  tableName: 'Activity_Multimedia',
+  sequelize: client,
+  tableName: 'activity_Multimedia',
   timestamps: false
 });
 
-module.exports = ActivityMultimedia;

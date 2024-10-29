@@ -1,8 +1,8 @@
 import { Model, DataTypes } from "sequelize";
-import { sequelize } from "./sequelize.js";
+import client from '../sequelize.js';
 
 // Export Payment class
-export class Payment extends Model {}
+export default class Payment extends Model {}
 
 Payment.init({
 	amount: {
@@ -23,7 +23,7 @@ Payment.init({
     reservation_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'Reservations',
+            model: 'reservation',
         },
     },
 
@@ -32,4 +32,8 @@ Payment.init({
         allowNull: false,
         unique: true,
     }
+},{
+    sequelize: client,
+    tableName: "payment",
+    timestamps: true
 });

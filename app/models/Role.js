@@ -1,9 +1,8 @@
-import { Model, Datatypes } from "sequelize";
-import { sequelize } from "./sequelize.js";
+import { Model, DataTypes } from 'sequelize';
+import client from '../sequelize.js';
 
 // Export Role class
-export class Role extends Model {};
-
+export default class Role extends Model {};
 
 Role.init({
     name: {
@@ -17,7 +16,12 @@ Role.init({
     },
 
     updated_at: {
-        type: DataType.DATE,
+        type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
     }
+}, {
+    sequelize: client,
+    tableName: "role",
+    timestamps: true
 });
+

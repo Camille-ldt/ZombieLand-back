@@ -70,7 +70,7 @@ CREATE TABLE "Payment" (
   "status" TEXT,
   "date_amount" TIMESTAMPTZ NOT NULL DEFAULT now(),
   "reservation_id" INT REFERENCES Reservation(id) ON DELETE SET NULL,
-  "stripe_payment_id" TEXT UNIQUE NOT NULL, -- ID du paiement Stripe pour la commande
+  "stripe_payment_id" TEXT UNIQUE NOT NULL -- ID du paiement Stripe pour la commande
 );
 
 CREATE TABLE "Period" (
@@ -86,7 +86,7 @@ CREATE TABLE "Period" (
 -- Tables de jointures --
 CREATE TABLE "User_Role" (
   "user_id" INT NOT NULL REFERENCES User(id) ON DELETE CASCADE,
-  "role_id" INT NOT NULL REFERENCES Role(id) ON DELETE CASCADE,
+  "role_id" INT NOT NULL REFERENCES Role(id) ON DELETE CASCADE
 );
 
 CREATE TABLE "Activity_Avis" (

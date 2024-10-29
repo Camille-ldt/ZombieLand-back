@@ -1,8 +1,8 @@
-import { Model, DataTypes } from "sequelize";
-import { sequelize } from "./sequelize.js";
+import { Model, DataTypes } from 'sequelize';
+import client from '../sequelize.js';
 
-
-export class Reservation extends Model {};
+// Export Reservation class
+export default class Reservation extends Model {};
 
 Reservation.init({
     number_reservation: {
@@ -30,7 +30,8 @@ Reservation.init({
         }
     }
 }, {
-    sequelize,
-    tableName: "Reservation",
+    sequelize: client,
+    tableName: "reservation",
     timestamps: true
 });
+

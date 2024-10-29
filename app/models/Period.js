@@ -1,8 +1,8 @@
-import { sequelize } from '../sequelize.js';
 import { Model, DataTypes } from 'sequelize';
+import client from '../sequelize.js';
 
 // Export Category class
-export class Period extends Model {}
+export default class Period extends Model {}
 
 Period.init({
         name: {
@@ -14,7 +14,7 @@ Period.init({
             defaultValue:DataTypes.NOW,
                     },
 },{
-        sequelize, 
-        tableName: "Period",
+        sequelize: client, 
+        tableName: "period",
         timestramps: true,
     });
