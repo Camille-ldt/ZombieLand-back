@@ -1,0 +1,27 @@
+### Get all reviews (Afficher toutes les réservations)
+GET http://localhost:3000/reviews
+
+### Get a single review by ID (Afficher une réservation par ID)
+GET http://localhost:3000/reviews/1
+
+### Create a review (Créer une réservation)
+POST http://localhost:3000/reviews
+Content-Type: application/json
+
+{
+  "note": 5,
+  "comment": "Amazing experience!",
+  "reservation_id": 4
+}
+
+### Update a review (Mettre à jour une réservation)
+PATCH http://localhost:3000/reviews/1
+Content-Type: application/json
+
+{
+  "note": 4,
+  "comment": "Changed my mind, it was good!"
+}
+
+### Delete a review (Supprimer une réservation)
+DELETE http://localhost:3000/reviews/7

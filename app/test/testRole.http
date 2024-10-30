@@ -1,0 +1,24 @@
+###
+GET http://localhost:3000/roles
+
+###
+GET http://localhost:3000/roles/1
+
+###
+POST http://localhost:3000/roles/role
+Content-Type: application/json
+
+{
+    "name": "Superman"
+}
+
+###
+PATCH http://localhost:3000/roles/3/modify
+Content-Type: application/json
+
+{*
+    "name": "Super tortue"
+}
+
+###
+DELETE http://localhost:3000/roles/3/delete

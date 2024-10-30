@@ -1,0 +1,28 @@
+###
+GET http://localhost:3000/activities
+
+###
+GET http://localhost:3000/activities/activity/1
+
+###
+POST http://localhost:3000/activities/activity
+Content-Type: application/json
+
+{
+    "title": "test activity",
+    "description": "test description",
+    "category_id": "1"
+}
+
+###
+PATCH http://localhost:3000/activities/5/modify
+Content-Type: application/json
+
+{
+    "title": "test activity updated test",
+    "description": "test description updated",
+    "category_id": "1"
+}
+
+###
+DELETE http://localhost:3000/activities/5/delete

@@ -1,0 +1,24 @@
+###
+GET http://localhost:3000/categories
+
+###
+GET http://localhost:3000/categories/category/1
+
+###
+POST http://localhost:3000/categories/category
+Content-Type: application/json
+
+{
+    "name":"test category"
+}
+
+###
+PATCH http://localhost:3000/categories/4/modify
+Content-Type: application/json
+
+{
+    "name":" test category updated"
+}
+
+###
+DELETE http://localhost:3000/categories/4/delete

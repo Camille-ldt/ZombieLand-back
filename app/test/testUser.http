@@ -1,0 +1,49 @@
+### Get all users 
+GET http://localhost:3000/users
+Content-Type: application/json
+
+###
+
+### Get a single review by ID 
+GET http://localhost:3000/users/user/3
+Content-Type: application/json
+
+###
+
+### Create a review
+POST http://localhost:3000/users/user
+Content-Type: application/json
+
+{
+  "firstname": "Jean-francois",
+  "lastname": "Obistro",
+  "birthday": "1989-06-18",
+  "phone_number": 847384958,
+  "email": "jeff.obistro@gmail.com",
+  "password": "password343421",
+  "image": "http://letrousansfin.jpg",
+  "role_id": 1
+}
+
+###
+
+### Update a review
+PATCH http://localhost:3000/users/7/modify
+Content-Type: application/json
+
+{
+  "firstname": "Edouard",
+  "lastname": "paul",
+  "birthday": "1989-06-18",
+  "phone_number": 847384958,
+  "email": "edouard.paul@gmail.com",
+  "password": "password343421",
+  "image": "http://letrousansfin.jpg",
+  "role_id": 1
+}
+
+###
+
+### Delete a review
+DELETE http://localhost:3000/users/7/delete
+Content-Type: application/json
