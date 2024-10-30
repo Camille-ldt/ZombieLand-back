@@ -6,91 +6,91 @@ import Category from "./models/Category.js";
 import Activity from "./models/Activity.js";
 import Multimedia from "./models/Multimedia.js";
 import Reservation from "./models/Reservation.js";
-import Avis from "./models/Avis.js";
+import Review from "./models/Review.js";
 import Payment from "./models/Payment.js";
 import Period from "./models/Period.js";
-import UserRole from "./models/UserRole.js";
-import ActivityAvis from "./models/ActivityAvis.js";
-import ActivityMultimedia from "./models/ActivityMultimedia.js";
 
-
-
-// Many-to-Many relationships
-User.belongsToMany(Role, {
-    through: 'user_role',
-    foreignKey: 'user_id'
+// One-to-Many relationship between Role and User
+//A role has many users
+Role.hasMany(User, {
+    foreignKey: 'role_id'
 });
-
-Role.belongsToMany(User, {
-    through: 'user_role',
+//but a user can only have one role
+User.belongsTo(Role, {
     foreignKey: 'role_id'
 });
 
-Activity.belongsToMany(Avis, {
-    through: 'activity_avis',
-    foreignKey: 'activity_id'
-});
-
-Avis.belongsToMany(Activity, {
-    through: 'activity_avis',
-    foreignKey: 'avis_id'
-});
-
-Activity.belongsToMany(Multimedia, {
-    through: 'activity_multimedia',
-    foreignKey: 'mutlimedia_id'
-});
-
-Multimedia.belongsToMany(Activity, {
-    through: 'activity_multimedia',
-    foreignKey: 'activity_id'
-});
-
-// One-to-Many relationships
+// One-to-Many relationship between Category and Activity
+//A category has many activity
 Category.hasMany(Activity, {
     foreignKey: 'category_id'
 });
-
+//an activity belongs to at least one category
 Activity.belongsTo(Category, {
     foreignKey: 'category_id'
 });
 
+//Many to many relationships
+//Activity can have 0 or many multimedia
+Activity.belongsToMany(Multimedia, {
+    through: 'activity_multimedia',
+    foreignKey: 'activity_id',
+    otherKey: 'multimedia_id',
+    as: 'multimedia'
+});
+//Multimedia can be related to 0 or many activities
+Multimedia.belongsToMany(Activity, {
+    through: 'activity_multimedia',
+    foreignKey: 'multimedia_id',
+    otherKey: 'activity_id',
+    as: 'activities'
+});
+
+
+// One-to-Many relationships
+//a user can have many reservation
 User.hasMany(Reservation, {
     foreignKey: 'user_id'
 });
-
+//but a reservation can only have one user
 Reservation.belongsTo(User, {
     foreignKey: 'user_id'
 });
 
-User.hasMany(Avis, {
-    foreignKey: 'user_id'
-});
-
-Avis.belongsTo(User, {
-    foreignKey: 'user_id'
-});
-
-Reservation.hasMany(Payment, {
+//A reservation has only one payment
+Reservation.hasOne(Payment, {
     foreignKey: 'reservation_id'
 });
-
+//a payment is related to only one reservation
 Payment.belongsTo(Reservation, {
     foreignKey: 'reservation_id'
 });
+//A reservation can only have one review
+Reservation.hasOne(Review, {
+    foreignKey: 'reservation_id'
+});
+//a review is linked to only one reservation
+Review.belongsTo(Reservation, {
+    foreignKey: 'reservation_id'
+});
+// a reservation is only linked to one period
+Reservation.belongsTo(Period, {
+    foreignKey: 'period_id'
+});
+//a period can have many reservations
+Period.hasMany(Reservation, {
+    foreignKey: 'period_id'
+});
 
 export {
-client,
-Activity,
-Avis,
-Multimedia,
-ActivityAvis,
-ActivityMultimedia,
-UserRole,
-User,
-Role,
-Payment,
-Reservation,
-Category,
-Period,
+    client,
+    Activity,
+    Review,
+    Multimedia,
+    User,
+    Role,
+    Payment,
+    Reservation,
+    Category,
+    Period
 };
