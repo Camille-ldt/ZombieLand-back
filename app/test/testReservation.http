@@ -1,0 +1,32 @@
+###
+GET http://localhost:3000/bookings
+
+###
+GET http://localhost:3000/bookings/booking/4
+
+###
+POST http://localhost:3000/bookings/booking
+Content-Type: application/json
+
+{
+    "date_start": "2024-11-02",
+    "date_end": "2024-11-03",
+    "number_tickets": "5",
+    "user_id": "4",
+    "period_id": "3"
+}
+
+###
+PATCH http://localhost:3000/bookings/11/modify
+Content-Type: application/json
+
+{
+    "date_start": "2024-11-02",
+    "date_end": "2024-11-03",
+    "number_tickets": "8",
+    "user_id": "4",
+    "period_id": "3"
+}
+
+###
+DELETE http://localhost:3000/bookings/10/delete

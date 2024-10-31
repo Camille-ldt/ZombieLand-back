@@ -64,7 +64,7 @@ export const updateActivity = async (req, res)=>{
         const {title, description, category_id} = req.body
         const activity = await Activity.findByPk(activityId)
         if (!activity){
-            return res.status(404).json({message: 'Activité non trouvée' });
+            return res.status(404).json({message: 'Activité not found' });
         }
         activity.title = title;
         activity.description = description

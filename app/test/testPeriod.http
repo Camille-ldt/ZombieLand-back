@@ -1,0 +1,30 @@
+###
+GET http://localhost:3000/periods
+
+###
+GET http://localhost:3000/periods/period/2
+
+###
+POST http://localhost:3000/periods/period
+Content-Type: application/json
+
+{
+    "name" : "Peak Season",
+    "date_start": "2024-07-01",
+    "date_end": "2024-08-31",
+    "price": "150.00"
+}
+
+###
+PATCH http://localhost:3000/periods/3/modify
+Content-Type: application/json
+
+{
+    "name": "Aaaaaaaah",
+    "date_start": "2024-12-01",
+    "date_end": "2024-12-31",
+    "price": "300.00"
+}
+
+###
+DELETE http://localhost:3000/periods/1/delete

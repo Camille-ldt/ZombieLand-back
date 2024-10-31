@@ -34,8 +34,8 @@ export const getReservationById = async (req, res) => {
   // Create a reservation (Créer une réservation)
   export const createReservation = async (req, res) => {
     try {
-      const { number_reservation, date_start, date_end, number_tickets, user_id } = req.body;
-      const newReservation = await Reservation.create({ number_reservation, date_start, date_end, number_tickets, user_id });
+      const { date_start, date_end, number_tickets, user_id, period_id } = req.body;
+      const newReservation = await Reservation.create({ date_start, date_end, number_tickets, user_id, period_id });
       res.status(201).json(newReservation);
     } catch (error) {
       console.error('Server error while creating reservation:', error);
