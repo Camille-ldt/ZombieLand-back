@@ -2,17 +2,8 @@
 GET http://localhost:3000/activities/multimedia
 
 ### Ajouter un multimédia à une activité
-PUT http://localhost:3000/activities/27/multimedia
-Content-Type: application/json
+PUT http://localhost:3000/activities/27/multimedia/1
 
-{
-  "Multimedia": [
-    {
-      "name": "test",
-      "url": "https://img.20mn.fr/bGqWYEdNQ6upluOv9LA45w/1444x920_acteur-henry-cavill"
-    }
-  ]
-}
 
 ### Supprimer un multimédia d'une activité
 DELETE http://localhost:3000/activities/5/multimedia/10

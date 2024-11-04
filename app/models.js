@@ -38,7 +38,10 @@ Activity.belongsToMany(Multimedia, {
     otherKey: 'multimedia_id',
     as: 'multimedia'
 });
-//Multimedia can be related to 0 or many activities
+
+
+
+// //Multimedia can be related to 0 or many activities
 Multimedia.belongsToMany(Activity, {
     through: 'activity_multimedia',
     foreignKey: 'multimedia_id',

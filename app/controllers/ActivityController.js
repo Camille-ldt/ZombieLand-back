@@ -1,4 +1,5 @@
 import Activity from '../models/Activity.js';
+import Multimedia from '../models/Multimedia.js';
 import { uploadImage } from '../services/uploadImage.js';
 
 export const getAllActivities = async (req, res) => {
@@ -122,3 +123,53 @@ export const deleteActivity = async (req, res) => {
         res.status(500).json({ message: 'Erreur serveur lors de la suppression de l\'activité' });
     }
 };
+
+// /activities/:activityId/multimedia
+export const getActivityMultimedia = async (req, res) => {
+    const activity = Activity.findByPk(req.params.activityId);
+
+    const medias = await activity.getMultimedias();
+    // [
+    //     Multimedia,
+    //     Multimedia,
+    //     Multimedia
+    // ]
+
+    res.json(medias);
+};
+
+// PUT /activities/:activityId/multimedia => activity.addMultimedia(multimedia)
+
+export const addMultimediaToActivity = async (req, res)=> {
+    const activity = Activity.findByPk(req.params.activityId);
+    
+    const multimediaId = req.body.multimediaId;
+    const multimedia = await Multimedia.findByPk(multimediaId);
+    if (!multimedia) {
+        return res.status(404).json({ message: 'Multimedia not found' });
+    }
+
+    await activity.addMultimedia(multimedia);
+
+    res.json(activity);
+};
+
+// DELETE /activities/:activityId/multimedia/:multimediaId => activity.removeMultimedia(multimedia)
+
+export const removeMultimediaFromActivity = async (req,res) => {
+    const activity = Activity.findByPk(req.params.activityId);
+    const multimediaId = req.body.multimediaId;
+
+    const multimedia = await Multimedia.findByPk(multimediaId);
+    if (!multimedia) {
+        return res.status(404).json({ message: 'Multimedia not found' });
+    }
+
+    await activity.removeMultimedia(multimedia);
+
+    res.json(activity);
+
+};
+
+// Documentation des fonctions ajoutées par le many-to-many de Sequelize :
+// https://sequelize.org/docs/v6/core-concepts/assocs/#foohasmanybar

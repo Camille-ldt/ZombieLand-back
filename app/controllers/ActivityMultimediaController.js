@@ -22,50 +22,27 @@ export async function getAllActivityMultimedia(req, res) {
     }
 }
 
-export async function addMultimediaToActivity(req, res) {
-    try {
-        const activityId = Number(req.params.activityId);
-        const { Multimedia: multimediaArray } = req.body;
-
-        if (!multimediaArray || !Array.isArray(multimediaArray)) {
-            return res.status(400).json({ message: "Données multimédia invalides" });
-        }
-
-        const activity = await Activity.findByPk(activityId);
-        if (!activity) {
-            return res.status(404).json({ message: "Activité non trouvée" });
-        }
-
-        for (const multimediaData of multimediaArray) {
-            // Créer ou trouver le multimédia
-            const [multimedia, created] = await Multimedia.findOrCreate({
-                where: { name: multimediaData.name },
-                defaults: multimediaData
-            });
-
-            // Créer l'association si elle n'existe pas déjà
-            await ActivityMultimedia.findOrCreate({
-                where: {
-                    activity_id: activityId,
-                    multimedia_id: multimedia.id
-                }
-            });
-        }
-
-        // Récupérer l'activité mise à jour avec tous ses multimédias
-        const updatedActivity = await Activity.findByPk(activityId, {
-            include: [{
-                model: Multimedia,
-                through: ActivityMultimedia
-            }]
+export async function addMultimediaToActivity (req, res){
+    try{
+        const activityId = req.params.activityId;
+        const multimediaId = req.params.multimediaId;
+        const [MultimediaActivity, created] = await ActivityMultimedia.findOrCreate({
+            where:{ activity_id: activityId, multimedia_id: multimediaId}
         });
-
+        if(created){
+            console.log('Association créée avec succès');
+        } else{
+            console.log('Cette association existe déjà');
+        }
+        const updatedActivity = await Activity.findByPk(activityId,{
+            include:[Multimedia]
+        });
         res.status(200).json(updatedActivity);
-    } catch (error) {
-        console.error("Erreur lors de l'ajout du multimédia à l'activité:", error);
-        res.status(500).json({ message: "Erreur serveur lors de l'ajout du multimédia à l'activité" });
+    }catch (error){
+        console.error("Erreur lors de l'ajout du film à la liste:", error);
+        res.status(500).json({message: "Erreur serveur lors de l'ajout du film à la liste"})
     }
-}
+};
 
 
 
