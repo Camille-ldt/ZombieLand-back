@@ -1,4 +1,5 @@
 import Activity from '../models/Activity.js';
+import { uploadImage } from '../services/uploadImage.js';
 
 export const getAllActivities = async (req, res) => {
     try {
@@ -16,7 +17,7 @@ export const getAllActivities = async (req, res) => {
 
 export const getOneActivity = async (req, res)=> {
     try {
-        const activityId = req.params.id;
+        const activityId = Number(req.params.id);
         const activity = await Activity.findByPk(activityId)
         if (!activity){
             return res.status(404).json({message: 'Activité non trouvée' });
@@ -31,8 +32,8 @@ export const getOneActivity = async (req, res)=> {
 
 export const createActivity = async (req, res) => {
     try {
-        const { title, description, category_id } = req.body;
-
+        const { title, description, category_id, filePath } = req.body;
+        const image_url = filePath ? await uploadImage(filePath, 'activities') : null;
         
         if (!title) {
             return res.status(400).json({ message: "An activity should have a title" });
@@ -40,10 +41,12 @@ export const createActivity = async (req, res) => {
         if (!description) {
             return res.status(400).json({ message: "An activity should have a description" });
         }
-        
+        if (!category_id) {
+            return res.status(400).json({ message: "Le champ category_id est requis." });
+        }
 
         
-        const newActivity = await Activity.create({ title, description, category_id });
+        const newActivity = await Activity.create({ title, description, category_id, image_url });
 
         if (!newActivity) {
             return res.status(500).json({ message: "Something went wrong while creating the activity" });
@@ -60,15 +63,32 @@ export const createActivity = async (req, res) => {
 
 export const updateActivity = async (req, res)=>{
     try {
-        const activityId = req.params.id;
-        const {title, description, category_id} = req.body
+        const activityId = Number(req.params.id);
+        const {title, description, category_id, filePath} = req.body;
+
         const activity = await Activity.findByPk(activityId)
         if (!activity){
             return res.status(404).json({message: 'Activité not found' });
         }
+
+        // Si un nouveau fichier est fourni, télécharge et mets à jour l'URL
+        let image_url = activity.image_url;
+        if (filePath) {
+            // Supprimer l'ancienne image de Cloudinary si elle existe
+            if (image_url) {
+                const publicId = image_url.split('/').pop().split('.')[0];
+                await cloudinary.uploader.destroy(`activities/${publicId}`);
+            }
+
+            // Télécharger la nouvelle image
+            image_url = await uploadImage(filePath, 'activities');
+        }
+
         activity.title = title;
-        activity.description = description
-        activity.category_id= category_id;
+        activity.description = description;
+        activity.category_id = category_id;
+        activity.image_url = image_url;
+
         await activity.save();
 
         res.status(204).json(activity);
@@ -80,7 +100,7 @@ export const updateActivity = async (req, res)=>{
 
 export const deleteActivity = async (req, res) => {
     try {
-        const activityId = req.params.id;
+        const activityId = Number(req.params.id);
         
         const activity = await Activity.findByPk(activityId);
         
@@ -88,6 +108,12 @@ export const deleteActivity = async (req, res) => {
             return res.status(404).json({ message: 'Activité non trouvée' });
         }
 
+        // Supprimer l'image de Cloudinary si elle existe
+        if (activity.image_url) {
+            const publicId = activity.image_url.split('/').pop().split('.')[0];
+            await cloudinary.uploader.destroy(`activities/${publicId}`);
+        }
+        
         await activity.destroy();
         res.status(204).json({message:'Activity is destroy'});
         

@@ -2,7 +2,7 @@
 GET http://localhost:3000/activities
 
 ###
-GET http://localhost:3000/activities/activity/1
+GET http://localhost:3000/activities/activity/27
 
 ###
 POST http://localhost:3000/activities/activity
