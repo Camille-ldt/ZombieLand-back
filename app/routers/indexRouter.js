@@ -7,6 +7,7 @@ import { router as reviewRoute } from './ReviewRoute.js';
 import { router as bookingRoute } from './ReservationRoute.js';
 import { router as periodRoute } from './PeriodRoute.js'
 import { router as paymentRoute } from './PaymentRoute.js';
+import { router as activityMultimediaRoute } from './ActivityMultimediaRoute.js'
 
 export const router = Router();
 
@@ -18,6 +19,7 @@ router.use('/reviews', reviewRoute);
 router.use('/bookings', bookingRoute);
 router.use('/periods', periodRoute);
 router.use('/payments', paymentRoute);
+router.use('/activityMultimedia', activityMultimediaRoute);
 
 router.use((req, res, next)=>{
 });
