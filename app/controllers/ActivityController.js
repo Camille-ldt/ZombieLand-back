@@ -124,52 +124,64 @@ export const deleteActivity = async (req, res) => {
     }
 };
 
-// /activities/:activityId/multimedia
+//Multimedia
 export const getActivityMultimedia = async (req, res) => {
-    const activity = Activity.findByPk(req.params.activityId);
-
-    const medias = await activity.getMultimedias();
-    // [
-    //     Multimedia,
-    //     Multimedia,
-    //     Multimedia
-    // ]
-
-    res.json(medias);
-};
-
-// PUT /activities/:activityId/multimedia => activity.addMultimedia(multimedia)
-
-export const addMultimediaToActivity = async (req, res)=> {
-    const activity = Activity.findByPk(req.params.activityId);
-    
-    const multimediaId = req.body.multimediaId;
-    const multimedia = await Multimedia.findByPk(multimediaId);
-    if (!multimedia) {
-        return res.status(404).json({ message: 'Multimedia not found' });
+    try {
+        const activity = await Activity.findByPk(req.params.activityId);
+        if (!activity) {
+            return res.status(404).json({ message: 'Activité non trouvée' });
+        }
+        const medias = await activity.getMultimedia();
+        res.status(200).json(medias);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des multimédias:', error);
+        res.status(500).json({ message: 'Erreur serveur lors de la récupération des multimédias' });
     }
-
-    await activity.addMultimedia(multimedia);
-
-    res.json(activity);
 };
 
-// DELETE /activities/:activityId/multimedia/:multimediaId => activity.removeMultimedia(multimedia)
+export const addMultimediaToActivity = async (req, res) => {
+    try {
+        const activity = await Activity.findByPk(req.params.activityId);
+        if (!activity) {
+            return res.status(404).json({ message: 'Activité non trouvée' });
+        }
 
-export const removeMultimediaFromActivity = async (req,res) => {
-    const activity = Activity.findByPk(req.params.activityId);
-    const multimediaId = req.body.multimediaId;
+        const multimedia = await Multimedia.findByPk(req.body.multimediaId);
+        if (!multimedia) {
+            return res.status(404).json({ message: 'Multimédia non trouvé' });
+        }
 
-    const multimedia = await Multimedia.findByPk(multimediaId);
-    if (!multimedia) {
-        return res.status(404).json({ message: 'Multimedia not found' });
+        await activity.addMultimedia(multimedia);
+
+        res.status(200).json({ message: 'Multimédia ajouté avec succès à l\'activité' });
+    } catch (error) {
+        console.error('Erreur lors de l\'ajout du multimédia:', error);
+        res.status(500).json({ message: 'Erreur serveur lors de l\'ajout du multimédia' });
     }
-
-    await activity.removeMultimedia(multimedia);
-
-    res.json(activity);
-
 };
+
+export const removeMultimediaFromActivity = async (req, res) => {
+    try {
+        const activity = await Activity.findByPk(req.params.activityId);
+        if (!activity) {
+            return res.status(404).json({ message: 'Activité non trouvée' });
+        }
+
+        const multimediaId = req.params.multimediaId; // Utilisez req.params au lieu de req.body
+        const multimedia = await Multimedia.findByPk(multimediaId);
+        if (!multimedia) {
+            return res.status(404).json({ message: 'Multimédia non trouvé' });
+        }
+
+        await activity.removeMultimedia(multimedia);
+
+        res.status(200).json({ message: 'Multimédia retiré avec succès de l\'activité' });
+    } catch (error) {
+        console.error('Erreur lors de la suppression du multimédia:', error);
+        res.status(500).json({ message: 'Erreur serveur lors de la suppression du multimédia' });
+    }
+};
+
 
 // Documentation des fonctions ajoutées par le many-to-many de Sequelize :
 // https://sequelize.org/docs/v6/core-concepts/assocs/#foohasmanybar

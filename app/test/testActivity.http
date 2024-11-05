@@ -14,15 +14,22 @@ Content-Type: application/json
     "category_id": 1
 }
 
+### Test récupération des multimédias associés à une activité
+GET http://localhost:3000/activities/24/multimedia
+Content-Type: application/json
+
 ###
-PATCH http://localhost:3000/activities/5/modify
+
+### Test ajout de multimédia à une activité
+PUT http://localhost:3000/activities/25/multimedia
 Content-Type: application/json
 
 {
-    "title": "test activity updated test",
-    "description": "test description updated",
-    "category_id": "1"
+    "multimediaId": 2
 }
 
 ###
-DELETE http://localhost:3000/activities/5/delete
+
+### Test suppression d'un multimédia d'une activité
+DELETE http://localhost:3000/activities/25/multimedia/2
+Content-Type: application/json
