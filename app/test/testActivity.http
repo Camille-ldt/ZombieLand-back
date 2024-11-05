@@ -25,11 +25,11 @@ PUT http://localhost:3000/activities/25/multimedia
 Content-Type: application/json
 
 {
-    "multimediaId": 2
+    "multimediaId": 3
 }
 
 ###
 
 ### Test suppression d'un multimédia d'une activité
-DELETE http://localhost:3000/activities/25/multimedia/2
+DELETE http://localhost:3000/activities/25/multimedia/3
 Content-Type: application/json
