@@ -1,107 +1,79 @@
-
+// Import des modèles nécessaires, par exemple :
 import User from '../models/User.js';
-import { uploadImage } from '../services/uploadImage.js';
 
-//Get all users (obtenir tous les utilisateurs)
-
+// Contrôleur pour obtenir tous les utilisateurs
 export const getAllUsers = async (req, res) => {
     try {
         const users = await User.findAll();
-
-        if (!users.length) {
-            return res.status(404).json({message: 'Aucun utilisateur trouvé'});
-        }
-        res.status (200).json(users);
+        console.log('All users fetched successfully');
+        res.status(200).json(users);
     } catch (error) {
-        console.error('Server error while fetching users');
-        res.status(500).json({message: 'Server error while fetching users'});
-    }  
+        console.error('Error fetching all users:', error);
+        res.status(500).json({ error: error.message });
+    }
 };
 
-//Get a user (obtenir un utilisateur)
+// Contrôleur pour obtenir un utilisateur spécifique par ID
 export const getOneUser = async (req, res) => {
     try {
-        const userId = Number(req.params.id);
-        const user = await User.findByPk(userId);
-        if (!user){
-            return res.status(404).json({message: 'Utilisateur non trouvé'});
-        };
-        res.status(200).json(user);
-    }  catch (error) {
-            console.error('Server error while fetching user', error);
-            res.status(500).json({message: 'Server error while fetching user'});
+        const user = await User.findByPk(req.params.id);
+        if (user) {
+            console.log(`User with ID ${req.params.id} fetched successfully`);
+            res.status(200).json(user);
+        } else {
+            console.log(`User with ID ${req.params.id} not found`);
+            res.status(404).json({ error: 'User not found' });
         }
-    };
-
-// Get a new user (créer un utilisateur)
-export const createUser = async (req, res) => {
-    try { 
-        const { firstname, lastname, email, password, filePath } = req.body;
-
-        // Upload the image to Cloudinary and get the URL
-        const image = filePath ? await uploadImage(filePath, 'avatars') : null;
-
-        // Create a new user with the image URL
-        const newUser = await User.create({ firstname, lastname, email, password, image });
-        res.status(201).json(newUser);
     } catch (error) {
-        console.error('Server error while creating user:', error);
-        res.status(500).json({ message: 'Server error while creating user' });
+        console.error('Error fetching user:', error);
+        res.status(500).json({ error: error.message });
     }
 };
 
-// Update a user (mettre à jour un utilisateur)
+// Contrôleur pour créer un nouvel utilisateur
+export const createUser = async (req, res) => {
+    try {
+        const user = await User.create(req.body);
+        console.log('User created successfully:', user);
+        res.status(201).json({ message: 'User created successfully', user });
+    } catch (error) {
+        console.error('Error creating user:', error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Contrôleur pour mettre à jour un utilisateur par ID
 export const updateUser = async (req, res) => {
     try {
-        const userId = Number(req.params.id);
-        const { firstname, lastname, email, password, filePath } = req.body;
-
-        // Récupérer l'utilisateur existant
-        const user = await User.findByPk(userId);
-        if (!user) {
-            return res.status(404).json({ message: 'Utilisateur non trouvé' });
+        const user = await User.findByPk(req.params.id);
+        if (user) {
+            await user.update(req.body);
+            console.log(`User with ID ${req.params.id} updated successfully`);
+            res.status(200).json({ message: 'User updated successfully', user });
+        } else {
+            console.log(`User with ID ${req.params.id} not found for update`);
+            res.status(404).json({ error: 'User not found' });
         }
-
-        // Si un nouveau fichier est fourni, télécharge et mets à jour l'URL
-        let image = user.image;
-        if (filePath) {
-            // Supprimer l'ancienne image de Cloudinary si elle existe
-            if (image) {
-                const publicId = image.split('/').pop().split('.')[0];
-                await cloudinary.uploader.destroy(`avatars/${publicId}`);
-            }
-
-            // Télécharger la nouvelle image
-            image = await uploadImage(filePath, 'avatars');
-        }
-
-        // Mise à jour des données de l'utilisateur
-        await user.update({ firstname, lastname, email, password, image });
-
-        res.status(200).json(user);
     } catch (error) {
-        console.error('Server error while updating user:', error);
-        res.status(500).json({ message: 'Server error while updating user' });
+        console.error('Error updating user:', error);
+        res.status(500).json({ error: error.message });
     }
 };
 
-// Delete a user (supprimer un utilisateur)
+// Contrôleur pour supprimer un utilisateur par ID
 export const deleteUser = async (req, res) => {
     try {
-        const userId = Number(req.params.id);
-        const user = await User.findByPk(userId);
-        if (!user){
-            return res.status(404).json({message: 'User not found'});
-        };
-        // Supprimer l'image de Cloudinary si elle existe
-        if (user.image) {
-            const publicId = user.image.split('/').pop().split('.')[0];
-            await cloudinary.uploader.destroy(`avatars/${publicId}`);
+        const user = await User.findByPk(req.params.id);
+        if (user) {
+            await user.destroy();
+            console.log(`User with ID ${req.params.id} deleted successfully`);
+            res.status(200).json({ message: 'User deleted successfully' });
+        } else {
+            console.log(`User with ID ${req.params.id} not found for deletion`);
+            res.status(404).json({ error: 'User not found' });
         }
-        await user.destroy(user);
-        res.status(204).json({ message: `User with ID ${userId} successfully deleted` }); 
     } catch (error) {
-        console.error('Server error while deleting user');
-        res.status(500).json({message: 'Server error while deleting user'});
+        console.error('Error deleting user:', error);
+        res.status(500).json({ error: error.message });
     }
 };

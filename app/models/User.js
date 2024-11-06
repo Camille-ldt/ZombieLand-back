@@ -1,9 +1,7 @@
-// Import necessary classes and types from Sequelize
 import { Model, DataTypes } from 'sequelize';
-// Import the Sequelize connection instance
+// Import de l'instance Sequelize client
 import client from '../sequelize.js';
 
-// Declare and export the User class that extends Sequelize's Model
 export default class User extends Model {};
 
 // Initialize the User model with its attributes and options
@@ -24,6 +22,7 @@ User.init({
         type: DataTypes.STRING,
         allowNull: false
     },
+    
     birthday:{
         type: DataTypes.DATE,
         allowNull: false  

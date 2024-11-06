@@ -1,15 +1,12 @@
 import express from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
-import { Registrer, Login } from '../controllers/authController.js';
+import { Registrer, Login } from '../controllers/authController.js'; // Assurez-vous que les noms sont corrects
 
 const router = express.Router();
 
-// Inscription
+// Route pour l'inscription
 router.post('/register', Registrer);
 
-// Connexion
+// Route pour la connexion
 router.post('/login', Login);
 
 export default router;
