@@ -10,59 +10,35 @@ Content-Type: application/json
 
 ###
 
-### Création/Inscription d'un nouvel utilisateur
+### Création/Inscription d'un nouvel utilisateur (incluant le mot de passe)
 POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "email": "donald.trump@example.com",
+  "email": "test.test@example.com",
   "password": "password123",
-  "firstname": "Donald",
-  "lastname": "Trump",
+  "firstname": "MrTest",
+  "lastname": "Testament",
   "birthday": "1990-01-15",
-  "phone_number": "1234567890"
+  "phone_number": "1234567890",
+  "role_id": 1
 }
 
-###
 
-### Mise à jour d'un profil utilisateur
-PATCH http://localhost:3000/users/6
+### Mise à jour d'un profil utilisateur (sans changer le mot de passe)
+PATCH http://localhost:3000/users/32
 Content-Type: application/json
 
 {
-  "firstname": "Edouard",
-  "lastname": "paul",
+  "firstname": "TestModifié",
+  "lastname": "TestMomifié",
   "birthday": "1989-06-18",
-  "phone_number": 847384958,
-  "email": "edouard.paul@gmail.com",
-  "password": "password343421",
-  "image": "http://letrousansfin.jpg",
-}
-
-###
-
-### Mise à jour du mot de passe de l'utilisateur
-PATCH http://localhost:3000/users/19
-Content-Type: application/json
-Authorization: Bearer votre_jeton_jwt_valide
-
-{
-  "password": "newSecurePassword123"
-}
-
-###
-
-### Connexion via email
-POST http://localhost:3000/login
-Content-Type: application/json
-
-{
-  "email": "donald.trump@example.com",
-  "password": "password123"
+  "phone_number": "123456789",
+  "email": "retest.retétést@gmail.com"
 }
 
 ###
 
 ### Suppression d'un utilisateur
-DELETE http://localhost:3000/users/7
+DELETE http://localhost:3000/users/28
 Content-Type: application/json

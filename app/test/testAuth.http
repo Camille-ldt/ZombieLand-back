@@ -1,13 +1,23 @@
 ### Connexion via email
-POST http://localhost:3000/login
+POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email": "donald.trump@example.com",
+  "email": "retest.retétést@gmail.com",
   "password": "password123"
 }
 
-### Obtenir la liste des utilisateurs (requiert un token)
-GET http://localhost:3000/login/19
-Authorization: Bearer <19>
+###
+
+### Mise à jour du mot de passe de l'utilisateur
+PATCH http://localhost:3000/auth/update-password/32
+Content-Type: application/json
+Authorization: Bearer votre_jeton_jwt_valide
+
+{
+  "password": "testestestequilestgentilletest"
+}
+
+###
+
 

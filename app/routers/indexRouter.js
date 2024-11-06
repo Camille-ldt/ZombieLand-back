@@ -19,4 +19,4 @@ router.use('/reviews', reviewRoute);
 router.use('/bookings', bookingRoute);
 router.use('/periods', periodRoute);
 router.use('/payments', paymentRoute);
-router.use('/login', authRoute);
+router.use('/auth', authRoute);

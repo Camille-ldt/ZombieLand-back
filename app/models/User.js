@@ -69,17 +69,3 @@ User.init({
     timestamps: true,
     underscored: true
 });
-
-// Middleware Sequelize pour hacher le mot de passe avant l'enregistrement
-User.beforeCreate(async (user) => {
-    if (user.password) {
-        user.password = await bcrypt.hash(user.password, 10);
-    }
-});
-
-// Middleware Sequelize pour hacher le mot de passe avant la mise à jour si changé
-User.beforeUpdate(async (user) => {
-    if (user.changed('password')) {
-        user.password = await bcrypt.hash(user.password, 10);
-    }
-});

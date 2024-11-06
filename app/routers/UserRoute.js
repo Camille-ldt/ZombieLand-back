@@ -3,13 +3,10 @@ import { getAllUsers, getOneUser, createUser, updateUser, deleteUser } from '../
 
 export const router = express.Router();
 
-// GET /users
 router.get('/', getAllUsers);
 
-// GET /users//:id
 router.get('/:id', getOneUser);
 
-// POST /users
 router.post('/', createUser);
 
 router.patch('/:id', updateUser);
