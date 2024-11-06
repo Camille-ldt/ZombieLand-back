@@ -39,6 +39,18 @@ User.init({
         type: DataTypes.STRING,
         allowNull: false
     },
+    street_address: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    postal_code: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    city: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     image: {
         type: DataTypes.STRING,
         allowNull: true
@@ -64,10 +76,10 @@ User.beforeCreate(async (user) => {
         user.password = await bcrypt.hash(user.password, 10);
     }
 });
+
+// Middleware Sequelize pour hacher le mot de passe avant la mise à jour si changé
 User.beforeUpdate(async (user) => {
     if (user.changed('password')) {
-        console.log("Mot de passe avant hachage:", user.password);
         user.password = await bcrypt.hash(user.password, 10);
-        console.log("Mot de passe après hachage:", user.password);
     }
 });

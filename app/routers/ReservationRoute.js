@@ -6,10 +6,10 @@ export const router = express.Router();
 
 router.get('/', getAllReservations);
 
-router.get('/booking/:id', getReservationById);
+router.get('/:id', getReservationById);
 
-router.post('/booking', createReservation);
+router.post('/', createReservation);
 
-router.patch('/:id/modify', updateReservation);
+router.patch('/:id', updateReservation);
 
-router.delete('/:id/delete', deleteReservation);
+router.delete('/:id', deleteReservation);

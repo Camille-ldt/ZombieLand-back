@@ -6,10 +6,10 @@ export const router = express.Router();
 
 router.get('/', getAllPayments);
 
-router.get('/Payment/:id', getOnePayment);
+router.get('/:id', getOnePayment);
 
-router.post('/Payment', createPayment);
+router.post('/', createPayment);
 
-router.patch('/:id/modify', updatePayment);
+router.patch('/:id', updatePayment);
 
-router.delete('/:id/delete', deletePayment);
+router.delete('/:id', deletePayment);

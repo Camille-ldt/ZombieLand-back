@@ -7,8 +7,8 @@ router.get('/', getAllRoles);
 
 router.get('/:id', getRole);
 
-router.post('/role', createRole);
+router.post('/', createRole);
 
-router.patch ('/:id/modify', updateRole);
+router.patch ('/:id', updateRole);
 
-router.delete ('/:id/delete', deleteRole);
+router.delete ('/:id', deleteRole);

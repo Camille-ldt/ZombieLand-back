@@ -1,10 +1,10 @@
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
-import { Op } from 'sequelize'; // Importez Op pour les comparaisons dans les requêtes Sequelize
+import { Op } from 'sequelize';
 import User from '../models/User.js';
 import nodemailer from 'nodemailer';
 
-// Fonction pour gérer la demande de réinitialisation de mot de passe
+// Gérer la demande de réinitialisation de mot de passe
 export const forgotPassword = async (req, res) => {
   try {
     // Vérifier si l'utilisateur existe dans la base de données

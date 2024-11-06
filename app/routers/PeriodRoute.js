@@ -6,10 +6,10 @@ export const router = express.Router();
 
 router.get('/', getAllPeriods);
 
-router.get('/period/:id', getOnePeriod);
+router.get('/:id', getOnePeriod);
 
-router.post('/period', createPeriod);
+router.post('/', createPeriod);
 
-router.patch('/:id/modify', updatePeriod);
+router.patch('/:id', updatePeriod);
 
-router.delete('/:id/delete', deletePeriod);
+router.delete('/:id', deletePeriod);

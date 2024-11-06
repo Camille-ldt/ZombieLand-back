@@ -6,13 +6,13 @@ export const router = express.Router();
 
 router.get('/', getAllActivities);
 
-router.get('/activity/:id', getOneActivity);
+router.get('/:id', getOneActivity);
 
-router.post('/activity', createActivity);
+router.post('/', createActivity);
 
-router.patch('/:id/modify', updateActivity);
+router.patch('/:id', updateActivity);
 
-router.delete('/:id/delete', deleteActivity);
+router.delete('/:id', deleteActivity);
 
 router.get('/:activityId/multimedia', getActivityMultimedia);
 

@@ -1,11 +1,11 @@
-###
+### Récupération de toutes les activités
 GET http://localhost:3000/activities
 
-###
-GET http://localhost:3000/activities/activity/27
+### Récupération d'une activité spécifique par son id
+GET http://localhost:3000/activities/27
 
-###
-POST http://localhost:3000/activities/activity
+### Création d'une nouvelle activité
+POST http://localhost:3000/activities
 Content-Type: application/json
 
 {
@@ -14,22 +14,3 @@ Content-Type: application/json
     "category_id": 1
 }
 
-### Test récupération des multimédias associés à une activité
-GET http://localhost:3000/activities/24/multimedia
-Content-Type: application/json
-
-###
-
-### Test ajout de multimédia à une activité
-PUT http://localhost:3000/activities/25/multimedia
-Content-Type: application/json
-
-{
-    "multimediaId": 3
-}
-
-###
-
-### Test suppression d'un multimédia d'une activité
-DELETE http://localhost:3000/activities/25/multimedia/3
-Content-Type: application/json

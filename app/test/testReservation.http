@@ -1,11 +1,11 @@
-###
+### Récupération de toutes les réservations
 GET http://localhost:3000/bookings
 
-###
-GET http://localhost:3000/bookings/booking/4
+### Récupération d'une réservation spécifique par son id
+GET http://localhost:3000/bookings/4
 
-###
-POST http://localhost:3000/bookings/booking
+### Création d'une nouvelle réservation
+POST http://localhost:3000/bookings
 Content-Type: application/json
 
 {
@@ -16,8 +16,8 @@ Content-Type: application/json
     "period_id": "3"
 }
 
-###
-PATCH http://localhost:3000/bookings/11/modify
+### Mise à jour d'une réservation
+PATCH http://localhost:3000/bookings/11
 Content-Type: application/json
 
 {
@@ -28,5 +28,6 @@ Content-Type: application/json
     "period_id": "3"
 }
 
-###
-DELETE http://localhost:3000/bookings/10/delete
+### Suppression d'une réservation
+DELETE http://localhost:3000/bookings/10
+Content-Type: application/json

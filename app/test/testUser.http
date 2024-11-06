@@ -10,25 +10,24 @@ Content-Type: application/json
 
 ###
 
-### Create a review
+### Création/Inscription d'un utilisateur
 POST http://localhost:3000/users/user
 Content-Type: application/json
 
 {
-  "firstname": "Jean-francois",
-  "lastname": "Obistro",
-  "birthday": "1989-06-18",
-  "phone_number": 847384958,
-  "email": "jeff.obistro@gmail.com",
-  "password": "password343421",
-  "image": "http://letrousansfin.jpg",
+  "email": "donald.trump2@example.com",
+  "password": "password123",
+  "firstname": "Donald2",
+  "lastname": "Trump2",
+  "birthday": "1990-01-15",
+  "phone_number": "1234567890",
   "role_id": 1
 }
 
 ###
 
-### Update a review
-PATCH http://localhost:3000/users/7/modify
+### Update Profile et mot de passe
+PATCH http://localhost:3000/users/6/modify
 Content-Type: application/json
 
 {
@@ -42,7 +41,31 @@ Content-Type: application/json
   "role_id": 1
 }
 
+### Mise à jour du mot de passe de l’utilisateur
+PATCH http://localhost:3000/users/19
+Content-Type: application/json
+Authorization: Bearer votre_jeton_jwt_valide
+
+{
+  "password": "newSecurePassword123"
+}
+
 ###
+
+### Connexion via email
+POST http://localhost:3000/users/login
+Content-Type: application/json
+
+{
+  "email": "donald.trump@example.com",
+  "password": "password123"
+}
+
+### Obtenir la liste des utilisateurs (requiert un token)
+GET http://localhost:3000/users/19
+Authorization: Bearer <19>
+
+
 
 ### Delete a review
 DELETE http://localhost:3000/users/7/delete
