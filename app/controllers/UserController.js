@@ -2,49 +2,65 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import { uploadImage, deleteImage } from '../services/uploadImage.js';
-import { validationResult } from 'express-validator';
+import { body, validationResult } from 'express-validator';
 import cloudinary from 'cloudinary';
 
 // Créer un utilisateur/inscription
-export const createUser = async (req, res) => {
-    try {
-        const {
-            email,
-            password,
-            firstname,
-            lastname,
-            birthday,
-            phone_number,
-            street_address,
-            postal_code,
-            city,
-        } = req.body;
+export const createUser = [
+    // Validation des données d'entrée
+    body('email').isEmail().withMessage('Email invalide'),
+    body('password').isLength({ min: 6 }).withMessage('Le mot de passe doit contenir au moins 6 caractères'),
+    body('firstname').notEmpty().withMessage('Le prénom est requis'),
+    body('lastname').notEmpty().withMessage('Le nom de famille est requis'),
 
-        // Vérifier si l'email existe déjà
-        const existingUser = await User.findOne({ where: { email } });
-        if (existingUser) {
-            return res.status(400).json({ message: 'Cet email est déjà utilisé.' });
+    async (req, res) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
+            const {
+                email,
+                password,
+                firstname,
+                lastname,
+                birthday,
+                phone_number,
+                street_address,
+                postal_code,
+                city
+            } = req.body;
+
+            // Vérifier si l'email existe déjà
+            const existingUser = await User.findOne({ where: { email } });
+            if (existingUser) {
+                return res.status(400).json({ message: 'Cet email est déjà utilisé.' });
+            }
+
+            // Hacher le mot de passe
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            // Créer un nouvel utilisateur
+            const user = await User.create({
+                email,
+                password: hashedPassword,
+                firstname,
+                lastname,
+                birthday,
+                phone_number,
+                street_address,
+                postal_code,
+                city
+            });
+
+            res.status(201).json({ message: 'Utilisateur enregistré avec succès', user });
+        } catch (error) {
+            console.error("Erreur dans la création :", error);
+            res.status(500).json({ error: 'Erreur serveur' });
         }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await User.create({
-            email,
-            password: hashedPassword,
-            firstname,
-            lastname,
-            birthday,
-            phone_number,
-            street_address,
-            postal_code,
-            city,
-        });
-
-        res.status(201).json({ message: 'Utilisateur enregistré avec succès', user });
-    } catch (error) {
-        console.error("Erreur dans la création :", error);
-        res.status(500).json({ error: 'Erreur serveur' });
     }
-};
+];
 
 // Obtenir tous les utilisateurs
 export const getAllUsers = async (req, res) => {

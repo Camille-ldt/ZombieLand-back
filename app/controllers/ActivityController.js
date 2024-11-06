@@ -33,8 +33,8 @@ export const getOneActivity = async (req, res)=> {
 
 export const createActivity = async (req, res) => {
     try {
-        const { title, description, category_id, filePath } = req.body;
-        const image_url = filePath ? await uploadImage(filePath, 'activities') : null;
+        console.log("Données reçues pour créer une activité :", req.body);
+        const { title, description, category_id } = req.body;
         
         if (!title) {
             return res.status(400).json({ message: "An activity should have a title" });
@@ -47,7 +47,7 @@ export const createActivity = async (req, res) => {
         }
 
         
-        const newActivity = await Activity.create({ title, description, category_id, image_url });
+        const newActivity = await Activity.create({ title, description, category_id });
 
         if (!newActivity) {
             return res.status(500).json({ message: "Something went wrong while creating the activity" });

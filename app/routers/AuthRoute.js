@@ -3,7 +3,5 @@ import { login } from '../controllers/AuthController.js';
 
 export const router = express.Router();
 
-// Routes d'authentification
-router.use('/', login);
-
-
+// Route d'authentification via email (POST /login)
+router.post('/', login);

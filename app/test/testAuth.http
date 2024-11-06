@@ -1,0 +1,13 @@
+### Connexion via email
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "donald.trump@example.com",
+  "password": "password123"
+}
+
+### Obtenir la liste des utilisateurs (requiert un token)
+GET http://localhost:3000/login/19
+Authorization: Bearer <19>
+

@@ -1,33 +1,32 @@
-### Get all users 
+### Récupération de tous les utilisateurs
 GET http://localhost:3000/users
 Content-Type: application/json
 
 ###
 
-### Get a single review by ID 
-GET http://localhost:3000/users/user/3
+### Récupération d'un utilisateur spécifique par ID
+GET http://localhost:3000/users/3
 Content-Type: application/json
 
 ###
 
-### Création/Inscription d'un utilisateur
-POST http://localhost:3000/users/user
+### Création/Inscription d'un nouvel utilisateur
+POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "email": "donald.trump2@example.com",
+  "email": "donald.trump@example.com",
   "password": "password123",
-  "firstname": "Donald2",
-  "lastname": "Trump2",
+  "firstname": "Donald",
+  "lastname": "Trump",
   "birthday": "1990-01-15",
-  "phone_number": "1234567890",
-  "role_id": 1
+  "phone_number": "1234567890"
 }
 
 ###
 
-### Update Profile et mot de passe
-PATCH http://localhost:3000/users/6/modify
+### Mise à jour d'un profil utilisateur
+PATCH http://localhost:3000/users/6
 Content-Type: application/json
 
 {
@@ -38,10 +37,11 @@ Content-Type: application/json
   "email": "edouard.paul@gmail.com",
   "password": "password343421",
   "image": "http://letrousansfin.jpg",
-  "role_id": 1
 }
 
-### Mise à jour du mot de passe de l’utilisateur
+###
+
+### Mise à jour du mot de passe de l'utilisateur
 PATCH http://localhost:3000/users/19
 Content-Type: application/json
 Authorization: Bearer votre_jeton_jwt_valide
@@ -53,7 +53,7 @@ Authorization: Bearer votre_jeton_jwt_valide
 ###
 
 ### Connexion via email
-POST http://localhost:3000/users/login
+POST http://localhost:3000/login
 Content-Type: application/json
 
 {
@@ -61,12 +61,8 @@ Content-Type: application/json
   "password": "password123"
 }
 
-### Obtenir la liste des utilisateurs (requiert un token)
-GET http://localhost:3000/users/19
-Authorization: Bearer <19>
+###
 
-
-
-### Delete a review
-DELETE http://localhost:3000/users/7/delete
+### Suppression d'un utilisateur
+DELETE http://localhost:3000/users/7
 Content-Type: application/json
