@@ -1,12 +1,9 @@
 // Importation des configurations nécessaires et des modules
-import 'dotenv/config'; // Charge les variables d'environnement
-import './app/sequelize.js'; // Initialise la connexion à la base de données
-import './app/models.js'; // Charge les modèles de la base de données
-
-import client from './app/sequelize.js'; // Import de l'instance Sequelize si nécessaire
-
-import { createServer } from 'node:http'; // Utilisation du module HTTP natif pour créer un serveur
-import { app } from './app/app.js'; // Importation de l'application Express
+import 'dotenv/config';
+import './app/sequelize.js';
+import './app/models.js'; 
+import { createServer } from 'node:http'; 
+import app from './app/app.js'; 
 
 // Définition du port
 const PORT = process.env.PORT ?? 3000;

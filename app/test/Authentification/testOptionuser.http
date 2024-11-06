@@ -1,0 +1,26 @@
+### Mise à jour du mot de passe de l’utilisateur
+PUT http://localhost:3000/api/users/<USER_ID>
+Content-Type: application/json
+Authorization: Bearer <TOKEN_ICI>
+
+{
+  "password": "newSecurePassword123"
+}
+
+### Demande de réinitialisation de mot de passe
+POST http://localhost:3000/api/auth/forgot-password
+Content-Type: application/json
+
+{
+  "email": "donald.trump@example.com"
+}
+
+### Réinitialisation du mot de passe avec le token
+POST http://localhost:3000/api/auth/reset-password
+Content-Type: application/json
+
+{
+  "token": "VOTRE_TOKEN", 
+  "newPassword": "newPassword123"
+}
+

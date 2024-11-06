@@ -1,79 +1,114 @@
-// Import des modèles nécessaires, par exemple :
 import User from '../models/User.js';
+import { uploadImage } from '../services/uploadImage.js';
+import { validationResult } from 'express-validator';
+import bcrypt from 'bcrypt';
+import cloudinary from 'cloudinary';
 
-// Contrôleur pour obtenir tous les utilisateurs
+// Obtenir tous les utilisateurs
 export const getAllUsers = async (req, res) => {
     try {
-        const users = await User.findAll();
-        console.log('All users fetched successfully');
+        const users = await User.findAll({
+            attributes: { exclude: ['password'] }
+        });
+        if (!users.length) {
+            return res.status(404).json({ message: 'Aucun utilisateur trouvé' });
+        }
         res.status(200).json(users);
     } catch (error) {
-        console.error('Error fetching all users:', error);
-        res.status(500).json({ error: error.message });
+        console.error('Erreur serveur lors de la récupération des utilisateurs');
+        res.status(500).json({ message: 'Erreur serveur lors de la récupération des utilisateurs' });
     }
 };
 
-// Contrôleur pour obtenir un utilisateur spécifique par ID
+// Obtenir un utilisateur
 export const getOneUser = async (req, res) => {
     try {
-        const user = await User.findByPk(req.params.id);
-        if (user) {
-            console.log(`User with ID ${req.params.id} fetched successfully`);
-            res.status(200).json(user);
-        } else {
-            console.log(`User with ID ${req.params.id} not found`);
-            res.status(404).json({ error: 'User not found' });
+        const userId = Number(req.params.id);
+        const user = await User.findByPk(userId, {
+            attributes: { exclude: ['password'] }
+        });
+        if (!user) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé' });
         }
+        res.status(200).json(user);
     } catch (error) {
-        console.error('Error fetching user:', error);
-        res.status(500).json({ error: error.message });
+        console.error('Erreur serveur lors de la récupération de l\'utilisateur', error);
+        res.status(500).json({ message: 'Erreur serveur lors de la récupération de l\'utilisateur' });
     }
 };
 
-// Contrôleur pour créer un nouvel utilisateur
+// Créer un utilisateur
 export const createUser = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
     try {
-        const user = await User.create(req.body);
-        console.log('User created successfully:', user);
-        res.status(201).json({ message: 'User created successfully', user });
+        const { firstname, lastname, email, password, filePath } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        let image = null;
+        if (filePath) {
+            image = await uploadImage(filePath, 'avatars');
+        }
+
+        const newUser = await User.create({ firstname, lastname, email, password: hashedPassword, image });
+        res.status(201).json({ ...newUser.toJSON(), password: undefined });
     } catch (error) {
-        console.error('Error creating user:', error);
-        res.status(500).json({ error: error.message });
+        console.error('Erreur serveur lors de la création de l\'utilisateur', error);
+        res.status(500).json({ message: 'Erreur serveur lors de la création de l\'utilisateur' });
     }
 };
 
-// Contrôleur pour mettre à jour un utilisateur par ID
+// Mettre à jour un utilisateur
 export const updateUser = async (req, res) => {
     try {
-        const user = await User.findByPk(req.params.id);
-        if (user) {
-            await user.update(req.body);
-            console.log(`User with ID ${req.params.id} updated successfully`);
-            res.status(200).json({ message: 'User updated successfully', user });
-        } else {
-            console.log(`User with ID ${req.params.id} not found for update`);
-            res.status(404).json({ error: 'User not found' });
+        const userId = Number(req.params.id);
+        const { firstname, lastname, email, password, filePath } = req.body;
+
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé' });
         }
+
+        let image = user.image;
+        if (filePath) {
+            if (image) {
+                const publicId = image.split('/').pop().split('.')[0];
+                await cloudinary.uploader.destroy(`avatars/${publicId}`);
+            }
+            image = await uploadImage(filePath, 'avatars');
+        }
+
+        const updateData = { firstname, lastname, email, image };
+        if (password) {
+            updateData.password = await bcrypt.hash(password, 10);
+        }
+
+        await user.update(updateData);
+        res.status(200).json({ ...user.toJSON(), password: undefined });
     } catch (error) {
-        console.error('Error updating user:', error);
-        res.status(500).json({ error: error.message });
+        console.error('Erreur serveur lors de la mise à jour de l\'utilisateur', error);
+        res.status(500).json({ message: 'Erreur serveur lors de la mise à jour de l\'utilisateur' });
     }
 };
 
-// Contrôleur pour supprimer un utilisateur par ID
+// Supprimer un utilisateur
 export const deleteUser = async (req, res) => {
     try {
-        const user = await User.findByPk(req.params.id);
-        if (user) {
-            await user.destroy();
-            console.log(`User with ID ${req.params.id} deleted successfully`);
-            res.status(200).json({ message: 'User deleted successfully' });
-        } else {
-            console.log(`User with ID ${req.params.id} not found for deletion`);
-            res.status(404).json({ error: 'User not found' });
+        const userId = Number(req.params.id);
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé' });
         }
+        if (user.image) {
+            const publicId = user.image.split('/').pop().split('.')[0];
+            await cloudinary.uploader.destroy(`avatars/${publicId}`);
+        }
+        await user.destroy();
+        res.status(204).json({ message: `Utilisateur ID ${userId} supprimé` });
     } catch (error) {
-        console.error('Error deleting user:', error);
-        res.status(500).json({ error: error.message });
+        console.error('Erreur serveur lors de la suppression de l\'utilisateur', error);
+        res.status(500).json({ message: 'Erreur serveur lors de la suppression de l\'utilisateur' });
     }
 };

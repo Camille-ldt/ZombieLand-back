@@ -1,0 +1,27 @@
+### Inscription d'un utilisateur
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "donald.trump@example.com",
+  "password": "password123",
+  "firstname": "Donald",
+  "lastname": "Trump",
+  "birthday": "1990-01-15",
+  "phone_number": "1234567890",
+  "role_id": 1
+}
+
+### Connexion via email
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "donald.trump@example.com",
+  "password": "password123"
+}
+
+
+### Obtenir la liste des utilisateurs (requiert un token)
+GET http://localhost:3000/api/users
+Authorization: Bearer <TOKEN>

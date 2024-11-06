@@ -1,5 +1,4 @@
 import client from "./sequelize.js";
-
 import User from "./models/User.js";
 import Role from "./models/Role.js";
 import Category from "./models/Category.js";

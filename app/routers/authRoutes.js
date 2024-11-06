@@ -1,12 +1,12 @@
 import express from 'express';
-import { Registrer, Login } from '../controllers/authController.js'; // Assurez-vous que les noms sont corrects
+import { register, login } from '../controllers/authController.js';
 
 const router = express.Router();
 
 // Route pour l'inscription
-router.post('/register', Registrer);
+router.post('/register', register);
 
 // Route pour la connexion
-router.post('/login', Login);
+router.post('/login', login);
 
 export default router;

@@ -1,38 +1,32 @@
 import { Model, DataTypes } from 'sequelize';
-// Import de l'instance Sequelize client
+import bcrypt from 'bcrypt';
 import client from '../sequelize.js';
 
-export default class User extends Model {};
+export default class User extends Model {}
 
-// Initialize the User model with its attributes and options
+// Initialisation du modèle User avec hachage automatique
 User.init({
-    //Define the user id
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    //Define the firstname of the user
     firstname: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    //the lastname of the user
     lastname: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    
-    birthday:{
+    birthday: {
         type: DataTypes.DATE,
         allowNull: false  
     },
-    //his phone number
     phone_number: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    //his email
     email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -41,17 +35,14 @@ User.init({
             isEmail: true
         }
     },
-    //his password
     password: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    //his image
     image: {
         type: DataTypes.STRING,
         allowNull: true
     },
-    //his role id
     role_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -61,9 +52,22 @@ User.init({
         }
     }
 }, {
-    // Use the Sequelize connection instance
     sequelize: client,
     tableName: "user",
     timestamps: true,
-    underscored: true  // Utilise des noms de colonnes en snake_case
+    underscored: true
+});
+
+// Middleware Sequelize pour hacher le mot de passe avant l'enregistrement
+User.beforeCreate(async (user) => {
+    if (user.password) {
+        user.password = await bcrypt.hash(user.password, 10);
+    }
+});
+User.beforeUpdate(async (user) => {
+    if (user.changed('password')) {
+        console.log("Mot de passe avant hachage:", user.password);
+        user.password = await bcrypt.hash(user.password, 10);
+        console.log("Mot de passe après hachage:", user.password);
+    }
 });
