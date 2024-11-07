@@ -50,12 +50,12 @@ export const createUser = [
                 password: hashedPassword,
                 firstname,
                 lastname,
-                birthday,
-                phone_number,
-                street_address,
-                postal_code,
-                city,
-                role_id
+                birthday: birthday || null, 
+                phone_number: phone_number || 'non renseigné', 
+                street_address: street_address || 'non renseigné',
+                postal_code: postal_code || '00000',
+                city: city || 'non renseigné',
+                role_id: role_id || 1, 
             });
 
             res.status(201); // (User created - Utilisateur créé)
