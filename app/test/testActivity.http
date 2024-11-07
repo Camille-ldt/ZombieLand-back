@@ -11,6 +11,6 @@ Content-Type: application/json
 {
     "title": "test activity",
     "description": "test description",
-    "category_id": 1
+    "category_id": 7
 }
 
