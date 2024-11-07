@@ -10,7 +10,7 @@ router.get('/:id', getOneActivity);
 
 router.post('/', createActivity);
 
-router.patch('/:id', updateActivity);
+router.put('/:id', updateActivity);
 
 router.delete('/:id', deleteActivity);
 

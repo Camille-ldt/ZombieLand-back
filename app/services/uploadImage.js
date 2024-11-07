@@ -1,9 +1,9 @@
 import cloudinary from './cloudinaryConfig.js';
 
 // Upload image to Cloudinary
-export const uploadImage = async (dataUrl) => {
+export const uploadImage = async (dataUrl, folder) => {
     try {
-        const result = await cloudinary.uploader.upload(dataUrl); // Upload image
+        const result = await cloudinary.uploader.upload(dataUrl, { folder }); // Upload image
         return result.secure_url; // Return image URL
     } catch (error) {
         console.error('Error uploading image to Cloudinary:', error); // Log error

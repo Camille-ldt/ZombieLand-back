@@ -1,8 +1,8 @@
 // File Path: controllers/UserController.js
 
 import { body, validationResult } from 'express-validator';
-import { hashPassword } from './AuthController.js'; 
-import * as AuthController from './AuthController.js'; 
+import { hashPassword } from './AuthController.js';
+import * as AuthController from './AuthController.js';
 import User from '../models/User.js';
 import { uploadImage, deleteImage } from '../services/uploadImage.js';
 import cloudinary from 'cloudinary';
@@ -121,7 +121,7 @@ export const updateUser = async (req, res) => {
             }
 
             // (Uploader l'image sur Cloudinary)
-            const imageUrl = await uploadImage(image);
+            const imageUrl = await uploadImage(image, { users });
             // (Mettre à jour l'URL de l'image dans les données)
             updateData.image = imageUrl;
         }
