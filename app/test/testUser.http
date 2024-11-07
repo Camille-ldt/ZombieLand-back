@@ -15,7 +15,7 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "email": "test.test@example.com",
+  "email": "test.test3@example.com",
   "password": "password123",
   "firstname": "MrTest",
   "lastname": "Testament",
@@ -30,11 +30,12 @@ PATCH http://localhost:3000/users/32
 Content-Type: application/json
 
 {
-  "firstname": "TestModifié",
-  "lastname": "TestMomifié",
+  "firstname": "TESTTEST",
+  "lastname": "TestMomifie",
   "birthday": "1989-06-18",
   "phone_number": "123456789",
-  "email": "retest.retétést@gmail.com"
+  "email": "retest.retetest@gmail.com",
+  "image": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
 }
 
 ###
