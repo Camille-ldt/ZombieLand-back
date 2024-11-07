@@ -2,7 +2,7 @@ import { Model, DataTypes } from 'sequelize';
 import bcrypt from 'bcrypt';
 import client from '../sequelize.js';
 
-export default class User extends Model {}
+export default class User extends Model { }
 
 // Initialisation du modèle User avec hachage automatique
 User.init({
@@ -21,11 +21,11 @@ User.init({
     },
     birthday: {
         type: DataTypes.DATE,
-        allowNull: false  
+        allowNull: true
     },
     phone_number: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     email: {
         type: DataTypes.STRING,
@@ -57,7 +57,7 @@ User.init({
     },
     role_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: 'role',
             key: 'id'

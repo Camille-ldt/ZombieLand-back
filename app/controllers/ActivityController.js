@@ -1,6 +1,6 @@
 import Activity from '../models/Activity.js';
 import Multimedia from '../models/Multimedia.js';
-import { uploadImage } from '../services/uploadImage.js';
+import { uploadImage, deleteImage } from '../services/uploadImage.js';
 
 export const getAllActivities = async (req, res) => {
     try {
@@ -39,7 +39,7 @@ export const getOneActivity = async (req, res) => {
 export const createActivity = async (req, res) => {
     try {
         console.log("Données reçues pour créer une activité :", req.body);
-        const { title, description, category_id } = req.body;
+        const { title, description, category_id, image } = req.body;
 
         if (!title) {
             return res.status(400).json({ message: "An activity should have a title" });
@@ -51,20 +51,24 @@ export const createActivity = async (req, res) => {
             return res.status(400).json({ message: "Le champ category_id est requis." });
         }
 
-        const newActivity = await Activity.create({ title, description, category_id });
+        const multimedias = [];
+        if (image) {
+            const imageUrl = await uploadImage(image, 'activities');
+            multimedias.push({
+                name: title,
+                url: imageUrl
+            });
+        }
+
+        const newActivity = await Activity.create(
+            { title, description, category_id, multimedias },
+            {
+                include: [{ model: Multimedia, as: 'multimedias' }]
+            }
+        );
 
         if (!newActivity) {
             return res.status(500).json({ message: "Something went wrong while creating the activity" });
-        }
-
-        if (image) {
-            const imageUrl = await uploadImage(image, 'activities');
-            const multimedia = Multimedia.create({
-                name: title,
-                url: imageUrl,
-                activity_id: newActivity.id
-            });
-            await newActivity.addMultimedia(multimedia);
         }
 
         res.status(201).json(newActivity);
@@ -88,17 +92,17 @@ export const updateActivity = async (req, res) => {
         activity.title = title;
         activity.description = description;
         activity.category_id = category_id;
-        activity.image_url = image_url;
 
         await activity.save();
 
         // (Si on a reçu une image depuis le front-end)
         if (image) {
             // (Si l'utilisateur a déjà une image)
-            const imageMultimedia = await activity.getMultimedia();
+            const imageMultimedias = await activity.getMultimedias();
+            const imageMultimedia = imageMultimedias[0];
 
             if (imageMultimedia) {
-                await deleteImage(imageMultimedia.url);
+                await deleteImage(imageMultimedia.url, 'activities');
             }
 
             // (Uploader l'image sur Cloudinary)
@@ -110,7 +114,7 @@ export const updateActivity = async (req, res) => {
 
         res.status(204).json(activity);
     } catch (error) {
-        console.error('Server error while updating activity');
+        console.error('Server error while updating activity', error);
         res.status(500).json({ message: 'Server error while updating activity' });
     }
 };
@@ -121,16 +125,21 @@ export const deleteActivity = async (req, res) => {
 
         const activity = await Activity.findByPk(activityId);
 
+        //Récupérer le multimédia
+        const imageMultimedias = await activity.getMultimedias();
+        const imageMultimedia = imageMultimedias[0];
+        console.log(imageMultimedia);
+
         if (!activity) {
             return res.status(404).json({ message: 'Activité non trouvée' });
         }
 
         // Supprimer l'image de Cloudinary si elle existe
-        if (activity.image_url) {
-            const publicId = activity.image_url.split('/').pop().split('.')[0];
-            await cloudinary.uploader.destroy(`activities/${publicId}`);
+        if (imageMultimedia) {
+            await deleteImage(imageMultimedia.url, 'activities');
         }
 
+        await imageMultimedia.destroy();
         await activity.destroy();
         res.status(204).json({ message: 'Activity is destroy' });
 
@@ -183,11 +192,14 @@ export const removeMultimediaFromActivity = async (req, res) => {
             return res.status(404).json({ message: 'Activité non trouvée' });
         }
 
-        const multimediaId = req.params.multimediaId; // Utilisez req.params au lieu de req.body
+        const multimediaId = req.params.multimediaId;
         const multimedia = await Multimedia.findByPk(multimediaId);
         if (!multimedia) {
             return res.status(404).json({ message: 'Multimédia non trouvé' });
         }
+
+        // Supprimer l'image de Cloudinary si elle existe
+        await deleteImage(multimedia);
 
         await activity.removeMultimedia(multimedia);
 

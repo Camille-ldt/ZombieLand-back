@@ -34,10 +34,11 @@ Activity.belongsTo(Category, {
 Activity.belongsToMany(Multimedia, {
     through: 'activity_multimedia',
     foreignKey: 'activity_id',
-    otherKey: 'multimedia_id'
+    otherKey: 'multimedia_id',
+    as: 'multimedias'
 });
 
-// //Multimedia can be related to 0 or many activities
+// Multimedia can be related to 0 or many activities
 Multimedia.belongsToMany(Activity, {
     through: 'activity_multimedia',
     foreignKey: 'multimedia_id',

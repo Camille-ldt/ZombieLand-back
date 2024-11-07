@@ -12,10 +12,19 @@ export const uploadImage = async (dataUrl, folder) => {
 };
 
 // Delete image from Cloudinary
-export const deleteImage = async (imageUrl) => {
-    const publicId = /([^\/]+)\.[a-z]+$/.exec(imageUrl)?.[1]; // Extract public ID
+export const deleteImage = async (imageUrl, folder) => {
+    const ExtractpublicId = /([^\/]+)\.[a-z]+$/.exec(imageUrl)?.[1]; // Extract public ID
+    const publicId = `${folder}/${ExtractpublicId}`
 
     if (publicId) {
-        await cloudinary.uploader.destroy(publicId); // Delete image
+        try {
+            await cloudinary.uploader.destroy(publicId); // Supprimer l'image de Cloudinary
+            console.log(`Image supprimée avec succès de Cloudinary : ${publicId}`);
+        } catch (error) {
+            console.error(`Erreur lors de la suppression de l'image de Cloudinary : ${publicId}`, error);
+            throw new Error('Échec de la suppression de l\'image');
+        }
+    } else {
+        console.error('ID public introuvable pour l\'image. Impossible de supprimer.');
     }
 };
