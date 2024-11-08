@@ -7,6 +7,7 @@ export const getAllActivities = async (req, res) => {
         const activities = await Activity.findAll({
             include: [{
                 model: Multimedia,
+                as: 'multimedias',
                 attributes: ['id', 'name', 'url']
             }]
         });
@@ -16,7 +17,7 @@ export const getAllActivities = async (req, res) => {
         }
         res.status(200).json(activities);
     } catch (error) {
-        console.error('Server error while fetching activities');
+        console.error('Server error while fetching activities', error);
         res.status(500).json({ message: 'Server error while fetching activities' });
     }
 };
@@ -30,7 +31,7 @@ export const getOneActivity = async (req, res) => {
         }
         res.status(200).json(activity);
     } catch (error) {
-        console.error('Server error while fetching activity');
+        console.error('Server error while fetching activity', error);
         res.status(500).json({ message: 'Server error while fetching activity' });
 
     }
@@ -137,9 +138,9 @@ export const deleteActivity = async (req, res) => {
         // Supprimer l'image de Cloudinary si elle existe
         if (imageMultimedia) {
             await deleteImage(imageMultimedia.url, 'activities');
+            await imageMultimedia.destroy();
         }
 
-        await imageMultimedia.destroy();
         await activity.destroy();
         res.status(204).json({ message: 'Activity is destroy' });
 

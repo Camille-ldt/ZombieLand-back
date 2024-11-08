@@ -10,6 +10,6 @@ router.get('/:id', getReservationById);
 
 router.post('/', createReservation);
 
-router.patch('/:id', updateReservation);
+router.put('/:id', updateReservation);
 
 router.delete('/:id', deleteReservation);
