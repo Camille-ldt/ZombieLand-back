@@ -5,7 +5,7 @@ Content-Type: application/json
 ###
 
 ### Récupération d'un utilisateur spécifique par ID
-GET http://localhost:3000/users/3
+GET http://localhost:3000/users/90
 Content-Type: application/json
 
 ###
@@ -15,13 +15,11 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "email": "test.test3@example.com",
-  "password": "password123",
-  "firstname": "MrTest",
-  "lastname": "Testament",
-  "birthday": "1990-01-15",
-  "phone_number": "1234567890",
-  "role_id": 1
+  "firstname": "Jesuisuntest",
+  "lastname": "Testtest",
+  "email": "retest.retetest@gmail.com",
+  "image": "https://www.jesuisuntestetcestbienloulou.png",
+  "password": "securepassword123"
 }
 
 
