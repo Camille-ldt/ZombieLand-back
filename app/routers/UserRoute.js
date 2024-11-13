@@ -19,7 +19,7 @@ router.get('/:id', authenticateJWT, getOneUser);
 router.post('/', createUser);
 
 // Route pour mettre à jour un utilisateur (à sécuriser)
-router.patch('/:id', authenticateJWT, updateUser);
+router.put('/:id', authenticateJWT, updateUser);
 
 // Route pour supprimer un utilisateur (à sécuriser)
 router.delete('/:id', authenticateJWT, deleteUser);
