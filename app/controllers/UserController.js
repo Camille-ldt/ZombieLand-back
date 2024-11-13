@@ -50,12 +50,12 @@ export const createUser = [
                 password: hashedPassword,
                 firstname,
                 lastname,
-                birthday: birthday || null, 
-                phone_number: phone_number || 'non renseigné', 
+                birthday: birthday || null,
+                phone_number: phone_number || 'non renseigné',
                 street_address: street_address || 'non renseigné',
                 postal_code: postal_code || '00000',
                 city: city || 'non renseigné',
-                role_id: role_id || 1, 
+                role_id: role_id || 1,
             });
 
             res.status(201); // (User created - Utilisateur créé)
@@ -121,7 +121,7 @@ export const updateUser = async (req, res) => {
             }
 
             // (Uploader l'image sur Cloudinary)
-            const imageUrl = await uploadImage(image, { users });
+            const imageUrl = await uploadImage(image, 'users');
             // (Mettre à jour l'URL de l'image dans les données)
             updateData.image = imageUrl;
         }
