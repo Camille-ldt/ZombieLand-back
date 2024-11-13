@@ -87,23 +87,27 @@ export const updateActivity = async (req, res) => {
 
         const activity = await Activity.findByPk(activityId)
         if (!activity) {
-            return res.status(404).json({ message: 'Activité not found' });
+            return res.status(404).json({ message: 'Activité non trouvé' });
         }
 
         activity.title = title;
         activity.description = description;
         activity.category_id = category_id;
-
         await activity.save();
 
         // (Si on a reçu une image depuis le front-end)
         if (image) {
             // (Si l'utilisateur a déjà une image)
             const imageMultimedias = await activity.getMultimedias();
-            const imageMultimedia = imageMultimedias[0];
+            let imageMultimedia = imageMultimedias[0];
 
             if (imageMultimedia) {
                 await deleteImage(imageMultimedia.url, 'activities');
+            } else {
+                imageMultimedia = Multimedia.build({
+                    name: activity.title,
+                    url: ""
+                });
             }
 
             // (Uploader l'image sur Cloudinary)
@@ -111,6 +115,8 @@ export const updateActivity = async (req, res) => {
             // (Mettre à jour l'URL de l'image dans les données)
             imageMultimedia.url = imageUrl;
             await imageMultimedia.save();
+
+            await activity.setMultimedias([imageMultimedia]);
         };
 
         res.status(204).json(activity);
