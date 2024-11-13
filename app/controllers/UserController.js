@@ -55,7 +55,7 @@ export const createUser = [
                 street_address: street_address || 'non renseigné',
                 postal_code: postal_code || '00000',
                 city: city || 'non renseigné',
-                role_id: role_id || 1,
+                role_id: role_id || 2,
             });
 
             res.status(201); // (User created - Utilisateur créé)
@@ -86,16 +86,22 @@ export const getAllUsers = async (req, res) => {
 export const getOneUser = async (req, res) => {
     try {
         const userId = Number(req.params.id);
+
+        // Vérifier si userId est un nombre valide
+        if (isNaN(userId)) {
+            return res.status(400).json({ message: 'Invalid user ID' });
+        }
+
         const user = await User.findByPk(userId, {
             attributes: { exclude: ['password'] }
         });
         if (!user) {
-            return res.status(404); // (User not found - Utilisateur non trouvé)
+            return res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json(user); // (User retrieved - Utilisateur récupéré)
+        res.status(200).json(user);
     } catch (error) {
-        console.error('Error retrieving user:', error); // (Erreur serveur lors de la récupération de l'utilisateur)
-        res.status(500); // (Server error - Erreur serveur)
+        console.error('Error retrieving user:', error);
+        res.status(500).json({ message: 'Server error' });
     }
 };
 
@@ -166,5 +172,23 @@ export const deleteUser = async (req, res) => {
     } catch (error) {
         console.error('Error deleting user:', error); // (Erreur serveur lors de la suppression de l'utilisateur)
         res.status(500); // (Server error - Erreur serveur)
+    }
+};
+
+// Get current user (Obtenir l'utilisateur connecté)
+export const getCurrentUser = async (req, res) => {
+    try {
+        const userId = req.user.id; // `req.user` est défini par le middleware `authenticateJWT`
+
+        const user = await User.findByPk(userId, {
+            attributes: { exclude: ['password'] }
+        });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Error retrieving current user:', error);
+        res.status(500).json({ message: 'Server error' });
     }
 };
