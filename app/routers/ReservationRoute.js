@@ -1,15 +1,16 @@
 import express from 'express';
 import { getAllReservations, getReservationById, createReservation, updateReservation, deleteReservation } from '../controllers/ReservationController.js';
-
+import authenticateJWT from '../middlewares/authenticateJWT.js';
+import authorizeRoles from '../middlewares/authorizeRoles.js';
 
 export const router = express.Router();
 
-router.get('/', getAllReservations);
+router.get('/', authenticateJWT, authorizeRoles(3), getAllReservations);
 
-router.get('/:id', getReservationById);
+router.get('/:id', authenticateJWT, authorizeRoles(3), getReservationById);
 
-router.post('/', createReservation);
+router.post('/', authenticateJWT, authorizeRoles(3), createReservation);
 
-router.put('/:id', updateReservation);
+router.put('/:id', authenticateJWT, authorizeRoles(3), updateReservation);
 
-router.delete('/:id', deleteReservation);
+router.delete('/:id', authenticateJWT, authorizeRoles(3), deleteReservation);
