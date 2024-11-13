@@ -1,23 +1,25 @@
-// File: app/services/passport.js
+// services/passport.js
 
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import passport from 'passport';
 import User from '../models/User.js';
 
-// JWT options
+// Options JWT
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // Extrait le token de l'en-tête
-  secretOrKey: process.env.JWT_SECRET, // Clé secrète (assurez-vous qu'elle est définie)
+  secretOrKey: process.env.JWT_SECRET, // Clé secrète
   algorithms: ['HS256'], // Algorithme de signature
 };
 
-// Utilisation de la stratégie JWT
+// Stratégie JWT
 passport.use(
   new JwtStrategy(opts, async (jwt_payload, done) => {
     try {
-      const user = await User.findByPk(jwt_payload.id); // Recherche l'utilisateur par ID
+      const user = await User.findByPk(jwt_payload.id);
       if (user) {
-        return done(null, user); // Utilisateur trouvé
+        // Inclure le rôle dans l'objet user
+        const userWithRole = { ...user.toJSON(), role: jwt_payload.role };
+        return done(null, userWithRole);
       }
       return done(null, false); // Utilisateur non trouvé
     } catch (err) {
