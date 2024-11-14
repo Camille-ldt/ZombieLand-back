@@ -19,7 +19,7 @@ export const createUser = [
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(400); // (Bad request - Demande incorrecte)
+                return res.status(400).end(); // (Bad request - Demande incorrecte)
             }
 
             const {
@@ -38,7 +38,7 @@ export const createUser = [
             // Check if email already exists (Vérifier si l'email existe déjà)
             const existingUser = await User.findOne({ where: { email } });
             if (existingUser) {
-                return res.status(400); // (Email already in use - Email déjà utilisé)
+                return res.status(400).end(); // (Email already in use - Email déjà utilisé)
             }
 
             // Use hashPassword function from AuthController to secure the password (Utiliser la fonction hashPassword d'AuthController pour sécuriser le mot de passe)
@@ -58,10 +58,10 @@ export const createUser = [
                 role_id: role_id || 2,
             });
 
-            res.status(201); // (User created - Utilisateur créé)
+            return res.status(201).end(); // (User created - Utilisateur créé)
         } catch (error) {
             console.error("Error creating user:", error); // (Erreur dans la création)
-            res.status(500); // (Server error - Erreur serveur)
+            return res.status(500).end(); // (Server error - Erreur serveur)
         }
     }
 ];
@@ -93,7 +93,7 @@ export const getOneUser = async (req, res) => {
         }
 
         const user = await User.findByPk(userId, {
-            attributes: { exclude: ['password'] }
+            // attributes: { exclude: ['password'] }
         });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
