@@ -58,7 +58,7 @@ export const createUser = [
                 role_id: role_id || 2,
             });
 
-            return res.status(201).end(); // (User created - Utilisateur créé)
+            return res.status(201).json(user); // (User created - Utilisateur créé)
         } catch (error) {
             console.error("Error creating user:", error); // (Erreur dans la création)
             return res.status(500).end(); // (Server error - Erreur serveur)
@@ -75,10 +75,10 @@ export const getAllUsers = async (req, res) => {
         if (!users.length) {
             return res.status(404); // (No users found - Aucun utilisateur trouvé)
         }
-        res.status(200).json(users); // (Users retrieved - Utilisateurs récupérés)
+        return res.status(200).json(users); // (Users retrieved - Utilisateurs récupérés)
     } catch (error) {
         console.error('Error retrieving users:', error); // (Erreur serveur lors de la récupération des utilisateurs)
-        res.status(500); // (Server error - Erreur serveur)
+        return res.status(500).end(); // (Server error - Erreur serveur)
     }
 };
 
@@ -98,10 +98,10 @@ export const getOneUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json(user);
+        return res.status(200).json(user);
     } catch (error) {
         console.error('Error retrieving user:', error);
-        res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error' });
     }
 };
 
@@ -113,7 +113,7 @@ export const updateUser = async (req, res) => {
 
         const user = await User.findByPk(userId);
         if (!user) {
-            return res.status(404); // (User not found - Utilisateur non trouvé)
+            return res.status(404).end(); // (User not found - Utilisateur non trouvé)
         }
 
         const updateData = { firstname, lastname, email, phone_number, birthday, street_address, postal_code, city };
@@ -134,10 +134,10 @@ export const updateUser = async (req, res) => {
 
         await user.update(updateData);
 
-        res.status(200); // (User updated - Utilisateur mis à jour)
+        return res.status(200).json(user); // (User updated - Utilisateur mis à jour)
     } catch (error) {
         console.error('Error updating user:', error); // (Erreur serveur lors de la mise à jour de l'utilisateur)
-        res.status(500); // (Server error - Erreur serveur)
+        return res.status(500).end(); // (Server error - Erreur serveur)
     }
 };
 
@@ -151,7 +151,7 @@ export const updatePassword = async (req, res) => {
         await AuthController.updatePassword(req, res);
     } catch (error) {
         console.error('Error updating password:', error); // (Erreur lors de la mise à jour du mot de passe)
-        res.status(500); // (Server error - Erreur serveur)
+        return res.status(500).end(); // (Server error - Erreur serveur)
     }
 };
 
@@ -161,17 +161,17 @@ export const deleteUser = async (req, res) => {
         const userId = Number(req.params.id);
         const user = await User.findByPk(userId);
         if (!user) {
-            return res.status(404); // (User not found - Utilisateur non trouvé)
+            return res.status(404).end(); // (User not found - Utilisateur non trouvé)
         }
         if (user.image) {
             const publicId = user.image.split('/').pop().split('.')[0];
             await cloudinary.uploader.destroy(`avatars/${publicId}`);
         }
         await user.destroy();
-        res.status(204); // (User deleted - Utilisateur supprimé)
+        return res.status(204).end(); // (User deleted - Utilisateur supprimé)
     } catch (error) {
         console.error('Error deleting user:', error); // (Erreur serveur lors de la suppression de l'utilisateur)
-        res.status(500); // (Server error - Erreur serveur)
+        return res.status(500).end(); // (Server error - Erreur serveur)
     }
 };
 
@@ -186,9 +186,9 @@ export const getCurrentUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json(user);
+        return res.status(200).json(user);
     } catch (error) {
         console.error('Error retrieving current user:', error);
-        res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error' });
     }
 };
