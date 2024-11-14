@@ -168,10 +168,10 @@ export const deleteUser = async (req, res) => {
             await cloudinary.uploader.destroy(`avatars/${publicId}`);
         }
         await user.destroy();
-        res.status(204); // (User deleted - Utilisateur supprimé)
+        return res.status(204).json({ message: 'Utilisateur supprimé avec succès' }); // (User deleted - Utilisateur supprimé)
     } catch (error) {
         console.error('Error deleting user:', error); // (Erreur serveur lors de la suppression de l'utilisateur)
-        res.status(500); // (Server error - Erreur serveur)
+        return res.status(500).end(); // (Server error - Erreur serveur)
     }
 };
 
