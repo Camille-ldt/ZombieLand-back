@@ -9,9 +9,9 @@ router.get('/', authenticateJWT, authorizeRoles(3), getAllReservations);
 
 router.get('/:id', authenticateJWT, authorizeRoles(3), getReservationById);
 
-router.get('/user/:user_id', authenticateJWT, authorizeRoles(3), getReservationsByUserId);
+router.get('/user/:user_id', authenticateJWT, authorizeRoles(2, 3), getReservationsByUserId);
 
-router.post('/', authenticateJWT, authorizeRoles(3), createReservation);
+router.post('/', authenticateJWT, authorizeRoles(2, 3), createReservation);
 
 router.put('/:id', authenticateJWT, authorizeRoles(3), updateReservation);
 

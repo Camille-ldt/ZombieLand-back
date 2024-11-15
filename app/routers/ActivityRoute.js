@@ -1,21 +1,31 @@
 import express from 'express';
 import { getAllActivities, getOneActivity, createActivity, updateActivity, deleteActivity, getActivityMultimedia, addMultimediaToActivity, removeMultimediaFromActivity } from '../controllers/ActivityController.js';
-
+import authenticateJWT from '../middlewares/authenticateJWT.js';
+import authorizeRoles from '../middlewares/authorizeRoles.js';
 
 export const router = express.Router();
 
-router.get('/', getAllActivities);
+// Route pour obtenir toutes les activités (accessible à tous les utilisateurs authentifiés)
+router.get('/', authenticateJWT, getAllActivities);
 
-router.get('/:id', getOneActivity);
+// Route pour obtenir une activité par ID (accessible à tous les utilisateurs authentifiés)
+router.get('/:id', authenticateJWT, getOneActivity);
 
-router.post('/', createActivity);
+// Route pour créer une activité (réservée aux administrateurs)
+router.post('/', authenticateJWT, authorizeRoles(3), createActivity);
 
-router.put('/:id', updateActivity);
+// Route pour mettre à jour une activité (réservée aux administrateurs)
+router.put('/:id', authenticateJWT, authorizeRoles(3), updateActivity);
 
-router.delete('/:id', deleteActivity);
+// Route pour supprimer une activité (réservée aux administrateurs)
+router.delete('/:id', authenticateJWT, authorizeRoles(3), deleteActivity);
 
-router.get('/:activityId/multimedia', getActivityMultimedia);
+// Routes liées au multimédia d'une activité
+// Obtenir les médias d'une activité (accessible à tous les utilisateurs authentifiés)
+router.get('/:activityId/multimedia', authenticateJWT, getActivityMultimedia);
 
-router.put('/:activityId/multimedia', addMultimediaToActivity);
+// Ajouter des médias à une activité (réservé aux administrateurs)
+router.put('/:activityId/multimedia', authenticateJWT, authorizeRoles(3), addMultimediaToActivity);
 
-router.delete('/:activityId/multimedia/:multimediaId', removeMultimediaFromActivity);
+// Supprimer un média d'une activité (réservé aux administrateurs)
+router.delete('/:activityId/multimedia/:multimediaId', authenticateJWT, authorizeRoles(3), removeMultimediaFromActivity);

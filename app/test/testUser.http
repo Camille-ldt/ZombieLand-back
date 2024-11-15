@@ -15,11 +15,11 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "firstname": "Jesuisuntest",
-  "lastname": "Testtest",
-  "email": "retest.retetest@gmail.com",
+  "firstname": "test1",
+  "lastname": "test",
+  "email": "test@gmail.com",
   "image": "https://www.jesuisuntestetcestbienloulou.png",
-  "password": "securepassword123"
+  "password": "test123"
 }
 
 
