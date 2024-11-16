@@ -5,10 +5,10 @@ import authorizeRoles from '../middlewares/authorizeRoles.js';
 
 export const router = express.Router();
 
-// Route pour obtenir toutes les activités (accessible à tous les utilisateurs authentifiés)
+// Route pour obtenir toutes les activités (accessible à tous les utilisateurs)
 router.get('/', authenticateJWT, getAllActivities);
 
-// Route pour obtenir une activité par ID (accessible à tous les utilisateurs authentifiés)
+// Route pour obtenir une activité par ID (accessible à tous les utilisateurs)
 router.get('/:id', authenticateJWT, getOneActivity);
 
 // Route pour créer une activité (réservée aux administrateurs)
@@ -21,7 +21,7 @@ router.put('/:id', authenticateJWT, authorizeRoles(3), updateActivity);
 router.delete('/:id', authenticateJWT, authorizeRoles(3), deleteActivity);
 
 // Routes liées au multimédia d'une activité
-// Obtenir les médias d'une activité (accessible à tous les utilisateurs authentifiés)
+// Obtenir les médias d'une activité (accessible à tous les utilisateurs)
 router.get('/:activityId/multimedia', authenticateJWT, getActivityMultimedia);
 
 // Ajouter des médias à une activité (réservé aux administrateurs)

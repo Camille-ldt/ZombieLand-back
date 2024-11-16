@@ -24,3 +24,4 @@ router.put('/:id', authenticateJWT, authorizeRoles(2, 3),updateUser);
 
 // Route pour supprimer un utilisateur
 router.delete('/:id', authenticateJWT, authorizeRoles(2, 3),deleteUser);
+

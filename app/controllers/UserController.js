@@ -11,15 +11,21 @@ import cloudinary from 'cloudinary';
 export const createUser = [
     // Input data validation (Validation des données d'entrée)
     body('email').isEmail().withMessage('Email invalide'),
-    body('password').isLength({ min: 6 }).withMessage('Le mot de passe doit contenir au moins 6 caractères'),
+    body('password')
+        .isLength({ min: 6 }).withMessage('Le mot de passe doit contenir au moins 8 caractères')
+        .matches(/[A-Z]/).withMessage('Le mot de passe doit contenir au moins une lettre majuscule')
+        .matches(/[a-z]/).withMessage('Le mot de passe doit contenir au moins une lettre minuscule')
+        .matches(/[0-9]/).withMessage('Le mot de passe doit contenir au moins un chiffre')
+        .matches(/[@$!%*?&]/).withMessage('Le mot de passe doit contenir au moins un caractère spécial (@$!%*?&)'),
     body('firstname').notEmpty().withMessage('Le prénom est requis'),
     body('lastname').notEmpty().withMessage('Le nom de famille est requis'),
+
 
     async (req, res) => {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(400).end(); // (Bad request - Demande incorrecte)
+                return res.status(400).json({ errors: errors.array() }); // Bad request and res (Demande incorrecte avec raisons)
             }
 
             const {
