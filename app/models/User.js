@@ -62,6 +62,16 @@ User.init({
             model: 'role',
             key: 'id'
         }
+    },
+    resetToken: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null 
+    },
+    resetTokenExpiry: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: null 
     }
 }, {
     sequelize: client,
