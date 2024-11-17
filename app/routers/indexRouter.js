@@ -5,9 +5,10 @@ import { router as roleRoute } from './RoleRoute.js';
 import { router as categoryRoute } from './CategoryRoute.js';
 import { router as reviewRoute } from './ReviewRoute.js'; 
 import { router as bookingRoute } from './ReservationRoute.js';
-import { router as periodRoute } from './PeriodRoute.js'
+import { router as periodRoute } from './PeriodRoute.js';
 import { router as paymentRoute } from './PaymentRoute.js';
 import { router as authRoute } from './AuthRoute.js';
+import { statsRouter } from './StatsRoute.js';
 
 export const router = Router();
 
@@ -20,3 +21,4 @@ router.use('/bookings', bookingRoute);
 router.use('/periods', periodRoute);
 router.use('/payments', paymentRoute);
 router.use('/auth', authRoute);
+router.use('/reservations/stats', statsRouter); // Correction du préfixe

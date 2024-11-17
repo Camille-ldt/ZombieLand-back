@@ -1,5 +1,12 @@
 import express from 'express';
-import { getAllReservations, getReservationById, createReservation, updateReservation, deleteReservation, getReservationsByUserId } from '../controllers/ReservationController.js';
+import {
+    getAllReservations,
+    getReservationById,
+    createReservation,
+    updateReservation,
+    deleteReservation,
+    getReservationsByUserId,
+} from '../controllers/ReservationController.js';
 import authenticateJWT from '../middlewares/authenticateJWT.js';
 import authorizeRoles from '../middlewares/authorizeRoles.js';
 
