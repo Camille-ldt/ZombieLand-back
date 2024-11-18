@@ -35,6 +35,6 @@ POST http://localhost:3000/auth/reset-password
 Content-Type: application/json
 
 {
-  "token": "votre_token",
-  "newPassword": "NouveauMdp123@"
+  "token": "61a2add3077434e568c768ce8a84e713dc2a4588c109b07083b24e6ad76134c5",
+  "newPassword": "Ecto19021986***"
 }

@@ -6,10 +6,10 @@ import authorizeRoles from '../middlewares/authorizeRoles.js';
 export const router = express.Router();
 
 // Route pour obtenir toutes les activités (accessible à tous les utilisateurs)
-router.get('/', authenticateJWT, getAllActivities);
+router.get('/', getAllActivities);
 
 // Route pour obtenir une activité par ID (accessible à tous les utilisateurs)
-router.get('/:id', authenticateJWT, getOneActivity);
+router.get('/:id', getOneActivity);
 
 // Route pour créer une activité (réservée aux administrateurs)
 router.post('/', authenticateJWT, authorizeRoles(3), createActivity);
