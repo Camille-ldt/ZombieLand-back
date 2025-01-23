@@ -9,7 +9,7 @@ POST http://localhost:3000/periods
 Content-Type: application/json
 
 {
-    "name": "Peak Season",
+    "name": "Vacances",
     "date_start": "2024-07-01",
     "date_end": "2024-08-31",
     "price": "150.00"
@@ -20,12 +20,12 @@ PATCH http://localhost:3000/periods/3
 Content-Type: application/json
 
 {
-    "name": "Aaaaaaaah",
+    "name": "Hiver",
     "date_start": "2024-12-01",
     "date_end": "2024-12-31",
     "price": "300.00"
 }
 
 ### Suppression d'une période
-DELETE http://localhost:3000/periods/1
+DELETE http://localhost:3000/periods/5
 Content-Type: application/json
